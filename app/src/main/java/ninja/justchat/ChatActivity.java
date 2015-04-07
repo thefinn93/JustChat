@@ -15,9 +15,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.support.v4.widget.DrawerLayout;
+import android.view.inputmethod.EditorInfo;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.TextView;
-
+import android.widget.Toast;
+import android.view.KeyEvent;
 
 public class ChatActivity extends ActionBarActivity
         implements NavigationDrawerFragment.NavigationDrawerCallbacks {
@@ -52,7 +55,7 @@ public class ChatActivity extends ActionBarActivity
         // update the main content by replacing fragments
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction()
-                .replace(R.id.container, PlaceholderFragment.newInstance(position + 1))
+                .replace(R.id.container, ChatFragment.newInstance(position + 1))
                 .commit();
     }
 
@@ -106,10 +109,23 @@ public class ChatActivity extends ActionBarActivity
         return super.onOptionsItemSelected(item);
     }
 
+    public void bindShit() {
+        EditText editText = (EditText) findViewById(R.id.entryBox);
+        editText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+//                boolean handled = false;
+                Toast.makeText(ChatActivity.this, "Sending message.", Toast.LENGTH_SHORT).show();
+//                handled = true;
+                return true;
+            }
+        });
+    }
+
     /**
      * A placeholder fragment containing a simple view.
      */
-    public static class PlaceholderFragment extends Fragment {
+    public static class ChatFragment extends Fragment {
         /**
          * The fragment argument representing the section number for this
          * fragment.
@@ -120,15 +136,15 @@ public class ChatActivity extends ActionBarActivity
          * Returns a new instance of this fragment for the given section
          * number.
          */
-        public static PlaceholderFragment newInstance(int sectionNumber) {
-            PlaceholderFragment fragment = new PlaceholderFragment();
+        public static ChatFragment newInstance(int sectionNumber) {
+            ChatFragment fragment = new ChatFragment();
             Bundle args = new Bundle();
             args.putInt(ARG_SECTION_NUMBER, sectionNumber);
             fragment.setArguments(args);
             return fragment;
         }
 
-        public PlaceholderFragment() {
+        public ChatFragment() {
         }
 
         @Override
@@ -136,6 +152,21 @@ public class ChatActivity extends ActionBarActivity
                                  Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_chat, container, false);
             return rootView;
+        }
+
+        @Override
+        public void onActivityCreated(Bundle savedInstanceState) {
+            super.onActivityCreated(savedInstanceState);
+
+            EditText editText = (EditText) getActivity().findViewById(R.id.entryBox);
+            editText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+                @Override
+                public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                    Toast.makeText(getActivity(), v.getText(), Toast.LENGTH_SHORT).show();
+                    v.setText("");
+                    return true;
+                }
+            });
         }
 
         @Override

@@ -109,19 +109,6 @@ public class ChatActivity extends ActionBarActivity
         return super.onOptionsItemSelected(item);
     }
 
-    public void bindShit() {
-        EditText editText = (EditText) findViewById(R.id.entryBox);
-        editText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-//                boolean handled = false;
-                Toast.makeText(ChatActivity.this, "Sending message.", Toast.LENGTH_SHORT).show();
-//                handled = true;
-                return true;
-            }
-        });
-    }
-
     /**
      * A placeholder fragment containing a simple view.
      */

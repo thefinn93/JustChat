@@ -11,4 +11,6 @@
     <string name="action_settings">Settings</string>
     <string name="action_join">Join a channel</string>
     <string name="action_part">Leave this channel</string>
+    <string name = "user_name">Guest</string>
+    <string name = "default_user_name">Guest</string>
 </resources>

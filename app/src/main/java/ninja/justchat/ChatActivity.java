@@ -1,6 +1,8 @@
 package ninja.justchat;
 
 import android.app.Activity;
+import android.app.Dialog;
+import android.content.SharedPreferences;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBar;
 import android.support.v4.app.Fragment;
@@ -17,6 +19,7 @@ import android.view.ViewGroup;
 import android.support.v4.widget.DrawerLayout;
 import android.view.inputmethod.EditorInfo;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -35,6 +38,7 @@ public class ChatActivity extends ActionBarActivity
      */
     private CharSequence mTitle;
 
+    static public String name = "";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,8 +52,20 @@ public class ChatActivity extends ActionBarActivity
         mNavigationDrawerFragment.setUp(
                 R.id.navigation_drawer,
                 (DrawerLayout) findViewById(R.id.drawer_layout));
+        Button loginButton = (Button)findViewById(R.id.name_dialog_button);
+        nameDialog namePopUp = new nameDialog(ChatActivity.this);
+        loginButton.setOnClickListener(namePopUp);
+        SharedPreferences sharedPref = ChatActivity.this.getPreferences(Context.MODE_PRIVATE);
+        String defaultValue = getResources().getString(R.string.default_user_name);
+        name = sharedPref.getString(getString(R.string.user_name), defaultValue);
+        if(name.equals("Guest") || name.equals(""))
+        {
+            new nameDialog(ChatActivity.this).onClick(new View(this));
+        }
     }
-
+    public ChatActivity()
+    {
+    }
     @Override
     public void onNavigationDrawerItemSelected(int position) {
         // update the main content by replacing fragments
@@ -91,6 +107,7 @@ public class ChatActivity extends ActionBarActivity
             restoreActionBar();
             return true;
         }
+
         return super.onCreateOptionsMenu(menu);
     }
 

@@ -25,8 +25,8 @@
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="cancle"
-            android:id="@+id/cancle_button"
+            android:text="Cancel"
+            android:id="@+id/cancel_button"
             android:layout_weight="1"/>
         </TableRow>
 

@@ -173,11 +173,11 @@ public class ChatActivity extends ActionBarActivity
                 public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                     TextView chatLog = (TextView) getActivity().findViewById(R.id.chatLog);
                     chatLog.setMovementMethod(new ScrollingMovementMethod());
-                    chatLogList.add(editTextChatLog.getText().toString());
+                    chatLogList.add(name + ">" + editTextChatLog.getText().toString());
                     String chatLogStr = "";
                     for (int a = 0; a < chatLogList.size(); a++)
                     {
-                        chatLogStr += name + "::" + chatLogList.get(a) + "\n";
+                        chatLogStr += chatLogList.get(a) + "\n";
                     }
                     chatLog.setText(chatLogStr);
                     Toast.makeText(getActivity(), v.getText(), Toast.LENGTH_SHORT).show();

@@ -28,7 +28,7 @@ public class nameDialog implements View.OnClickListener{
         nameDialog.show();
         final EditText editText =(EditText)nameDialog.findViewById(R.id.user_name_text_box);
         Button submitButton = (Button)nameDialog.findViewById(R.id.ok_button);
-        Button cancleButton = (Button)nameDialog.findViewById(R.id.cancle_button);
+        Button cancleButton = (Button)nameDialog.findViewById(R.id.cancel_button);
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

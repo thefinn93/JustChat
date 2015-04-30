@@ -54,9 +54,9 @@ public class ChatActivity extends ActionBarActivity
         mNavigationDrawerFragment.setUp(
                 R.id.navigation_drawer,
                 (DrawerLayout) findViewById(R.id.drawer_layout));
-        Button loginButton = (Button)findViewById(R.id.name_dialog_button);
+        //Button loginButton = (Button)findViewById(R.id.name_dialog_button);
         nameDialog namePopUp = new nameDialog(ChatActivity.this);
-        loginButton.setOnClickListener(namePopUp);
+        //loginButton.setOnClickListener(namePopUp);
         SharedPreferences sharedPref = ChatActivity.this.getPreferences(Context.MODE_PRIVATE);
         String defaultValue = getResources().getString(R.string.default_user_name);
         name = sharedPref.getString(getString(R.string.user_name), defaultValue);
@@ -125,6 +125,11 @@ public class ChatActivity extends ActionBarActivity
             return true;
         }
 
+        if (id == R.id.action_name) {
+            new nameDialog(ChatActivity.this).onClick(new View(this));
+            return true;
+        }
+
         return super.onOptionsItemSelected(item);
     }
 
@@ -180,6 +185,7 @@ public class ChatActivity extends ActionBarActivity
                         chatLogStr += chatLogList.get(a) + "\n\n";
                     }
                     chatLog.setText(chatLogStr);
+                    chatLog.scrollTo(0, chatLog.getLayout().getLineTop(chatLog.getLineCount()) - chatLog.getHeight());
                     v.setText("");
                     return true;
                 }

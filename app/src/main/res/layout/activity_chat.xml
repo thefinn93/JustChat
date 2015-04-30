@@ -9,12 +9,7 @@
     <FrameLayout android:id="@+id/container" android:layout_width="match_parent"
         android:layout_height="match_parent" >
 
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Show Dialog"
-            android:id="@+id/name_dialog_button"
-            android:layout_gravity="center" />
+
     </FrameLayout>
 
     <!-- android:layout_gravity="start" tells DrawerLayout to treat

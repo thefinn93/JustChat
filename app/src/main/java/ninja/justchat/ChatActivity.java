@@ -10,6 +10,7 @@ import android.support.v4.app.FragmentManager;
 import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.method.ScrollingMovementMethod;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -24,6 +25,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.view.KeyEvent;
+import java.util.ArrayList;
 
 public class ChatActivity extends ActionBarActivity
         implements NavigationDrawerFragment.NavigationDrawerCallbacks {
@@ -136,6 +138,8 @@ public class ChatActivity extends ActionBarActivity
          */
         private static final String ARG_SECTION_NUMBER = "section_number";
 
+        private ArrayList<String> chatLogList = new ArrayList<String>();
+
         /**
          * Returns a new instance of this fragment for the given section
          * number.
@@ -163,9 +167,19 @@ public class ChatActivity extends ActionBarActivity
             super.onActivityCreated(savedInstanceState);
 
             EditText editText = (EditText) getActivity().findViewById(R.id.entryBox);
+            final EditText editTextChatLog = (EditText) getActivity().findViewById(R.id.entryBox);
             editText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
                 @Override
                 public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                    TextView chatLog = (TextView) getActivity().findViewById(R.id.chatLog);
+                    chatLog.setMovementMethod(new ScrollingMovementMethod());
+                    chatLogList.add(editTextChatLog.getText().toString());
+                    String chatLogStr = "";
+                    for (int a = 0; a < chatLogList.size(); a++)
+                    {
+                        chatLogStr += name + "::" + chatLogList.get(a) + "\n";
+                    }
+                    chatLog.setText(chatLogStr);
                     Toast.makeText(getActivity(), v.getText(), Toast.LENGTH_SHORT).show();
                     v.setText("");
                     return true;

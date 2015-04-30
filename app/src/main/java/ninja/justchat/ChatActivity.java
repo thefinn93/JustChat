@@ -177,10 +177,9 @@ public class ChatActivity extends ActionBarActivity
                     String chatLogStr = "";
                     for (int a = 0; a < chatLogList.size(); a++)
                     {
-                        chatLogStr += chatLogList.get(a) + "\n";
+                        chatLogStr += chatLogList.get(a) + "\n\n";
                     }
                     chatLog.setText(chatLogStr);
-                    Toast.makeText(getActivity(), v.getText(), Toast.LENGTH_SHORT).show();
                     v.setText("");
                     return true;
                 }

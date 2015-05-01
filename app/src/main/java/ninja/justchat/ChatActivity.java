@@ -54,12 +54,12 @@ public class ChatActivity extends ActionBarActivity
         mNavigationDrawerFragment.setUp(
                 R.id.navigation_drawer,
                 (DrawerLayout) findViewById(R.id.drawer_layout));
-        //Button loginButton = (Button)findViewById(R.id.name_dialog_button);
-        nameDialog namePopUp = new nameDialog(ChatActivity.this);
-        //loginButton.setOnClickListener(namePopUp);
+
+        //Load the username from shared preferences
         SharedPreferences sharedPref = ChatActivity.this.getPreferences(Context.MODE_PRIVATE);
-        String defaultValue = getResources().getString(R.string.default_user_name);
-        name = sharedPref.getString(getString(R.string.user_name), defaultValue);
+        String defaultValue = this.getResources().getString(R.string.default_user_name);
+        name = sharedPref.getString(String.valueOf(R.string.user_name),defaultValue);
+        //if we are default ask the user to input a name
         if(name.equals("Guest") || name.equals(""))
         {
             new nameDialog(ChatActivity.this).onClick(new View(this));

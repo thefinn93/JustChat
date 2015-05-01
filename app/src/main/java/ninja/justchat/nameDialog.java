@@ -6,7 +6,6 @@ import android.content.SharedPreferences;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
 /**
 * Created by Brad Minogue on 4/28/2015.

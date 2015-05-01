@@ -1,30 +1,24 @@
 package ninja.justchat;
 
 import android.app.Activity;
-import android.app.Dialog;
+import android.content.Context;
 import android.content.SharedPreferences;
-import android.support.v7.app.ActionBarActivity;
-import android.support.v7.app.ActionBar;
+import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.content.Context;
-import android.os.Build;
-import android.os.Bundle;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.ActionBarActivity;
 import android.text.method.ScrollingMovementMethod;
-import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.support.v4.widget.DrawerLayout;
-import android.view.inputmethod.EditorInfo;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
-import android.view.KeyEvent;
+
 import java.util.ArrayList;
 
 public class ChatActivity extends ActionBarActivity
@@ -60,7 +54,7 @@ public class ChatActivity extends ActionBarActivity
         String defaultValue = this.getResources().getString(R.string.default_user_name);
         name = sharedPref.getString(String.valueOf(R.string.user_name),defaultValue);
         //if we are default ask the user to input a name
-        if(name.equals("Guest") || name.equals(""))
+        if(name.equals(defaultValue))
         {
             new nameDialog(ChatActivity.this).onClick(new View(this));
         }
@@ -93,7 +87,6 @@ public class ChatActivity extends ActionBarActivity
 
     public void restoreActionBar() {
         ActionBar actionBar = getSupportActionBar();
-        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
         actionBar.setDisplayShowTitleEnabled(true);
         actionBar.setTitle(mTitle);
     }
@@ -143,7 +136,7 @@ public class ChatActivity extends ActionBarActivity
          */
         private static final String ARG_SECTION_NUMBER = "section_number";
 
-        private ArrayList<String> chatLogList = new ArrayList<String>();
+        private ArrayList<String> chatLogList = new ArrayList<>();
 
         /**
          * Returns a new instance of this fragment for the given section
@@ -163,8 +156,7 @@ public class ChatActivity extends ActionBarActivity
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.fragment_chat, container, false);
-            return rootView;
+            return inflater.inflate(R.layout.fragment_chat, container, false);
         }
 
         @Override

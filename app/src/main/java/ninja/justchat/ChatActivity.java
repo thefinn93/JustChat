@@ -56,7 +56,7 @@ public class ChatActivity extends ActionBarActivity
         //if we are default ask the user to input a name
         if(name.equals(defaultValue))
         {
-            new nameDialog(ChatActivity.this).onClick(new View(this));
+            new NameDialog(ChatActivity.this).onClick(new View(this));
         }
     }
     public ChatActivity()
@@ -119,7 +119,7 @@ public class ChatActivity extends ActionBarActivity
         }
 
         if (id == R.id.action_name) {
-            new nameDialog(ChatActivity.this).onClick(new View(this));
+            new NameDialog(ChatActivity.this).onClick(new View(this));
             return true;
         }
 

@@ -10,10 +10,10 @@ import android.widget.EditText;
 /**
 * Created by Brad Minogue on 4/28/2015.
 */
-public class nameDialog implements View.OnClickListener{
+public class NameDialog implements View.OnClickListener{
     Dialog nameDialog;
     ChatActivity current;
-    public nameDialog(ChatActivity current)
+    public NameDialog(ChatActivity current)
     {
         //This needs current for referncing view and recourses
         this.current = current;

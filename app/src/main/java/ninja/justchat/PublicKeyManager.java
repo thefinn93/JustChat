@@ -1,5 +1,7 @@
 package ninja.justchat;
 
+import android.util.Log;
+
 import java.math.BigInteger;
 import java.security.KeyStore;
 import java.security.cert.CertificateException;
@@ -17,45 +19,21 @@ import javax.net.ssl.X509TrustManager;
 public final class PublicKeyManager implements X509TrustManager {
 
     // DER encoded public key
-    private static String PUB_KEY = "MIIHRTCCBi2gAwIBAgIHBZs9uk2bSjANBgkqhkiG9w0BAQsFADCBjDELMAkGA1UE\n" +
-            "BhMCSUwxFjAUBgNVBAoTDVN0YXJ0Q29tIEx0ZC4xKzApBgNVBAsTIlNlY3VyZSBE\n" +
-            "aWdpdGFsIENlcnRpZmljYXRlIFNpZ25pbmcxODA2BgNVBAMTL1N0YXJ0Q29tIENs\n" +
-            "YXNzIDEgUHJpbWFyeSBJbnRlcm1lZGlhdGUgU2VydmVyIENBMB4XDTE1MDQyODA4\n" +
-            "NTE0N1oXDTE2MDQyODExNDI0OFowUTELMAkGA1UEBhMCVVMxHDAaBgNVBAMTE2p1\n" +
-            "c3RjaGF0LmZpbm4ubmluamExJDAiBgkqhkiG9w0BCQEWFXBvc3RtYXN0ZXJAZmlu\n" +
-            "bi5uaW5qYTCCAiIwDQYJKoZIhvcNAQEBBQADggIPADCCAgoCggIBAMTFWP939tR4\n" +
-            "WCPkwA3+JCBc22/l8RxsGW+L81jCnnlZ4de8HCVkpGtQL1ASNvCTs41LjGyu7kR0\n" +
-            "gEOOq8I1yZzXAEx3SZUySFsU8JsuUd3YwEC5iMdn/ZtK86QKdS9ovnDpUAEsPF2G\n" +
-            "149xwnAz0D/NR1DjdIX74CmxGGKDxqwSR1XpKC+ZwdBm9pywPoAZ3M3iR5pE2YEJ\n" +
-            "2a4xLbq/dc4+Gjoyuf7Xw4qVcS3m1tqb2JlW6uyActko9QeGgJOi70bGzcFoQ1tZ\n" +
-            "Pox1fjFhyFHuUKr/i764DZQ6AYoa+amxj/Xn6UuY5QvB+gGEJOZFfI4PbyD9NMov\n" +
-            "Nv9sSJj/DwUqROxpnsx+hhsZl8zGruTm2rvJgWVyRp9OlybZxuNbNmxsVmery+Tq\n" +
-            "zH9n9qy+rxTEe7UVLCLalTGAy7lIGnd8sUemzoMBkHiP7L7JCd37exjoI51QvD3D\n" +
-            "W+TgVjXLC8poepCMDX+Xki0kzBXIVUfxg1bfFu2BgQDL2Hgh0AuKWYHNDAKJIslr\n" +
-            "iK1Rx9Imem+xj1RzHvPksQzakTUGjT+B8dNh+afxdc0q+XAz0w7R0I+/ACXiRGxE\n" +
-            "ondTSsvOhl6Oy/2Pczq1ihrXGWNQqNt8VJ7jcRsc39Zl43Ftjl+qYR9S2SW8LyeF\n" +
-            "X4f1mhB47P0MGM3WqHP/KEttYLB+XNBnAgMBAAGjggLkMIIC4DAJBgNVHRMEAjAA\n" +
-            "MAsGA1UdDwQEAwIDqDATBgNVHSUEDDAKBggrBgEFBQcDATAdBgNVHQ4EFgQUeEqr\n" +
-            "Exrr/8TKwyUwn2v0akXCBlwwHwYDVR0jBBgwFoAU60I00Jiwq5/0G2sI98xkLu8O\n" +
-            "LEUwKgYDVR0RBCMwIYITanVzdGNoYXQuZmlubi5uaW5qYYIKZmlubi5uaW5qYTCC\n" +
-            "AVYGA1UdIASCAU0wggFJMAgGBmeBDAECATCCATsGCysGAQQBgbU3AQIDMIIBKjAu\n" +
-            "BggrBgEFBQcCARYiaHR0cDovL3d3dy5zdGFydHNzbC5jb20vcG9saWN5LnBkZjCB\n" +
-            "9wYIKwYBBQUHAgIwgeowJxYgU3RhcnRDb20gQ2VydGlmaWNhdGlvbiBBdXRob3Jp\n" +
-            "dHkwAwIBARqBvlRoaXMgY2VydGlmaWNhdGUgd2FzIGlzc3VlZCBhY2NvcmRpbmcg\n" +
-            "dG8gdGhlIENsYXNzIDEgVmFsaWRhdGlvbiByZXF1aXJlbWVudHMgb2YgdGhlIFN0\n" +
-            "YXJ0Q29tIENBIHBvbGljeSwgcmVsaWFuY2Ugb25seSBmb3IgdGhlIGludGVuZGVk\n" +
-            "IHB1cnBvc2UgaW4gY29tcGxpYW5jZSBvZiB0aGUgcmVseWluZyBwYXJ0eSBvYmxp\n" +
-            "Z2F0aW9ucy4wNQYDVR0fBC4wLDAqoCigJoYkaHR0cDovL2NybC5zdGFydHNzbC5j\n" +
-            "b20vY3J0MS1jcmwuY3JsMIGOBggrBgEFBQcBAQSBgTB/MDkGCCsGAQUFBzABhi1o\n" +
-            "dHRwOi8vb2NzcC5zdGFydHNzbC5jb20vc3ViL2NsYXNzMS9zZXJ2ZXIvY2EwQgYI\n" +
-            "KwYBBQUHMAKGNmh0dHA6Ly9haWEuc3RhcnRzc2wuY29tL2NlcnRzL3N1Yi5jbGFz\n" +
-            "czEuc2VydmVyLmNhLmNydDAjBgNVHRIEHDAahhhodHRwOi8vd3d3LnN0YXJ0c3Ns\n" +
-            "LmNvbS8wDQYJKoZIhvcNAQELBQADggEBAHX1h73mBq54xJ3NFXTfSsD1yuviIrWy\n" +
-            "dDXuvH3ELMN9ujGSur+Qdl82CygUtFZR8CX4kU7OCAaDLzOLgYxSmMMUKba0btAN\n" +
-            "rPTFDm81bWISjunxjMWL6I3+zVBE4eKFXTamJzzbgJtrNtzTQGpz5rCu2NiZyCJm\n" +
-            "S/lN5V1yC0Fw6KYN95H8dbcyNTuNkX20Qn8FTLZl7PmxUfmdx+NK5zY7qBE7ZDU2\n" +
-            "yOwA3fo1Kmg40dTsSZodk9MCFNl+G4DAvXtNJyG5sDeu0pxZNhWtmRKbt1UO3d+8\n" +
-            "7Sy1aimHOKNjWVhak9IGPD0Fj7DWlqIpBSr9i/pkCvVy6S29IwuZmqI=\n";
+    private static String PUB_KEY = "30820222300d06092a864886f70d01010105000382020f003082020a0282" +
+            "020100c4c558ff77f6d4785823e4c00dfe24205cdb6fe5f11c6c196f8bf358c29e7959e1d7bc1c2564a4" +
+            "6b502f501236f093b38d4b8c6caeee447480438eabc235c99cd7004c77499532485b14f09b2e51ddd8c0" +
+            "40b988c767fd9b4af3a40a752f68be70e950012c3c5d86d78f71c27033d03fcd4750e37485fbe029b118" +
+            "6283c6ac124755e9282f99c1d066f69cb03e8019dccde2479a44d98109d9ae312dbabf75ce3e1a3a32b9" +
+            "fed7c38a95712de6d6da9bd89956eaec8072d928f507868093a2ef46c6cdc168435b593e8c757e3161c8" +
+            "51ee50aaff8bbeb80d943a018a1af9a9b18ff5e7e94b98e50bc1fa018424e6457c8e0f6f20fd34ca2f36" +
+            "ff6c4898ff0f052a44ec699ecc7e861b1997ccc6aee4e6dabbc9816572469f4e9726d9c6e35b366c6c56" +
+            "67abcbe4eacc7f67f6acbeaf14c47bb5152c22da953180cbb9481a777cb147a6ce830190788fecbec909" +
+            "ddfb7b18e8239d50bc3dc35be4e05635cb0bca687a908c0d7f97922d24cc15c85547f18356df16ed8181" +
+            "00cbd87821d00b8a5981cd0c028922c96b88ad51c7d2267a6fb18f54731ef3e4b10cda9135068d3f81f1" +
+            "d361f9a7f175cd2af97033d30ed1d08fbf0025e2446c44a277534acbce865e8ecbfd8f733ab58a1ad719" +
+            "6350a8db7c549ee3711b1cdfd665e3716d8e5faa611f52d925bc2f27855f87f59a1078ecfd0c18cdd6a8" +
+            "73ff284b6d60b07e5cd0670203010001";
+
 
     public void checkServerTrusted(X509Certificate[] chain, String authType)
             throws CertificateException {
@@ -72,8 +50,9 @@ public final class PublicKeyManager implements X509TrustManager {
                     "checkServerTrusted: X509Certificate is empty");
         }
 
-        assert (null != authType && authType.equalsIgnoreCase("RSA"));
-        if (!(null != authType && authType.equalsIgnoreCase("RSA"))) {
+        assert (null != authType && authType.equalsIgnoreCase("ECDHE_RSA"));
+        if (!(null != authType && authType.equalsIgnoreCase("ECDHE_RSA"))) {
+            Log.d("PublicKeyManager", "Auth type is " + authType);
             throw new CertificateException(
                     "checkServerTrusted: AuthType is not RSA");
         }

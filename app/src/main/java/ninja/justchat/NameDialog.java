@@ -41,6 +41,7 @@ public class NameDialog implements View.OnClickListener{
                 editor.putString(String.valueOf((R.string.user_name)),
                         editText.getText().toString());
                 editor.commit();
+                new SecureConnection().execute("register?name=" + editText.getText().toString());
                 nameDialog.cancel();
             }
         });

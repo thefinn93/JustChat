@@ -169,6 +169,9 @@ public class ChatActivity extends ActionBarActivity
                 @Override
                 public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                     TextView chatLog = (TextView) getActivity().findViewById(R.id.chatLog);
+                    // Send message to server
+                    new SecureConnection().execute("sendmsg?msg=" + editTextChatLog.getText().toString());
+                    // Add it to the list
                     chatLog.setMovementMethod(new ScrollingMovementMethod());
                     chatLogList.add(name + ">" + editTextChatLog.getText().toString());
                     String chatLogStr = "";

@@ -1,5 +1,7 @@
 package ninja.justchat;
 
+import android.util.Log;
+
 import org.json.JSONObject;
 
 /**
@@ -8,6 +10,10 @@ import org.json.JSONObject;
  * Based on sample code from http://stackoverflow.com/a/9963705/403940 and some explanation at
  * http://www.justinmccandless.com/blog/Setting+Up+a+Callback+Function+in+Android
  */
-public interface ApiResponse {
-    void onAPIResponse(JSONObject result);
+
+public class SecureConnectionCallback implements onAPIResponse {
+    @Override
+    public void onAPIResponse(JSONObject result) {
+        Log.d("ConnectionCB", result.toString());
+    }
 }

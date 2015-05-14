@@ -53,7 +53,7 @@ public class NameDialog implements View.OnClickListener {
                     Log.e("JSONEncoding", e.toString());
                     e.printStackTrace();
                 }
-                new SecureConnection().execute(dataToSend);
+                new SecureConnection(new SecureConnectionCallback()).execute(dataToSend);
                 nameDialog.cancel();
             }
         });

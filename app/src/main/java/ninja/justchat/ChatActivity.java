@@ -26,7 +26,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 public class ChatActivity extends ActionBarActivity
-        implements NavigationDrawerFragment.NavigationDrawerCallbacks, ApiResponse {
+        implements NavigationDrawerFragment.NavigationDrawerCallbacks {
 
     /**
      * Fragment managing the behaviors, interactions and presentation of the navigation drawer.
@@ -182,7 +182,12 @@ public class ChatActivity extends ActionBarActivity
                         Log.e("JSONEncoding", e.toString());
                         e.printStackTrace();
                     }
-                    new SecureConnection().execute(dataToSend);
+
+                    // Network code
+                    SecureConnectionCallback callback = new SecureConnectionCallback();
+                    new SecureConnection(callback).execute(dataToSend);
+
+
                     // Add it to the list
                     chatLog.setMovementMethod(new ScrollingMovementMethod());
                     chatLogList.add(name + ">" + editTextChatLog.getText().toString());

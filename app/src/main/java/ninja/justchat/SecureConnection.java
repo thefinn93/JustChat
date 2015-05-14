@@ -54,8 +54,8 @@ public class SecureConnection extends AsyncTask<JSONObject, Object, Object> {
             connection.setDoOutput(true);
 
             PrintWriter postdata = new PrintWriter(connection.getOutputStream());
-            postdata.println(params.toString());
-            Log.d("SecureConnectionJSON", params.toString());
+            postdata.println(params[0].toString());
+            Log.d("SecureConnectionJSON", params[0].toString());
             postdata.close();
             postdata = null;
 

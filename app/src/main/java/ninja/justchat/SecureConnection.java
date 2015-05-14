@@ -1,6 +1,7 @@
 package ninja.justchat;
 
 import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.io.StreamTokenizer;
 import java.net.URL;
 
@@ -14,8 +15,13 @@ import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.ProgressBar;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 // http://android-developers.blogspot.com/2009/05/painless-threading.html
-public class SecureConnection extends AsyncTask<String, Void, Object> {
+public class SecureConnection extends AsyncTask<JSONObject, Object, Object> {
+
+    private ApiResponse callback;
 
     @Override
     protected void onPreExecute() {
@@ -23,47 +29,59 @@ public class SecureConnection extends AsyncTask<String, Void, Object> {
     }
 
     @Override
-    protected Object doInBackground(String... params) {
+    protected Object doInBackground(JSONObject... params) {
 
         Object result = null;
 
         try {
             Log.d("SecureConnection", "Connecting");
 
-            byte[] secret = null;
+            byte[] response = null;
 
             TrustManager tm[] = { new PublicKeyManager() };
             assert (null != tm);
 
             SSLContext context = SSLContext.getInstance("TLS");
+            assert (null != context);
             context.init(null, tm, null);
 
-            URL url = new URL( "https://justchat.finn.ninja/" + params[0] );
-            Log.d("SecureConnection", "Connecting to https://justchat.finn.ninja/" + params[0]);
+            URL url = new URL( "https://justchat.finn.ninja/endpoint" );
+            assert (null != url);
 
             HttpsURLConnection connection = (HttpsURLConnection) url.openConnection();
             assert (null != connection);
 
+            connection.setDoOutput(true);
+
+            PrintWriter postdata = new PrintWriter(connection.getOutputStream());
+            postdata.println(params.toString());
+            Log.d("SecureConnectionJSON", params.toString());
+            postdata.close();
+            postdata = null;
+
             connection.setSSLSocketFactory(context.getSocketFactory());
             InputStreamReader instream = new InputStreamReader(connection.getInputStream());
+            assert (null != instream);
 
             StreamTokenizer tokenizer = new StreamTokenizer(instream);
+            assert (null != tokenizer);
 
-            secret = new byte[16];
+            response = new byte[16];
+            assert (null != response);
 
             int idx = 0, token;
-            while (idx < secret.length) {
+            while (idx < response.length) {
                 token = tokenizer.nextToken();
                 if (token == StreamTokenizer.TT_EOF)
                     break;
                 if (token != StreamTokenizer.TT_NUMBER)
                     continue;
 
-                secret[idx++] = (byte) tokenizer.nval;
+                response[idx++] = (byte) tokenizer.nval;
             }
 
             // Prepare return value
-            result = (Object) secret;
+            result = (Object) response;
 
         } catch (Exception ex) {
 
@@ -77,31 +95,24 @@ public class SecureConnection extends AsyncTask<String, Void, Object> {
         return result;
     }
 
-    @Override
     protected void onPostExecute(Object result) {
-
-        assert (null != result);
-        if (null == result)
-            return;
-
-        assert (result instanceof Exception || result instanceof byte[]);
-        if (!(result instanceof Exception || result instanceof byte[]))
-            return;
-
-        if (result instanceof Exception) {
-            ExitWithException((Exception) result);
-            return;
-        }
-
-        ExitWithSecret((byte[]) result);
+        // TODO: catch any issues with the execution of the task, handle them logically
+        doAPICallback((byte[]) result);
     }
 
     protected void ExitWithException(Exception ex) {
-        Log.d("SecureConnection", "Error fetching secret " + ex.toString());
+        Log.d("SecureConnection", "Error fetching result " + ex.toString());
     }
 
-    protected void ExitWithSecret(byte[] secret) {
-        StringBuilder sb = new StringBuilder(secret.length * 3 + 1);
+    protected void doAPICallback(byte[] result) {
+        StringBuilder sb = new StringBuilder(result.length * 3 + 1);
+
+        try {
+            JSONObject jsonObject = new JSONObject(sb.toString());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
 
         Log.d("SecureConnection", sb.toString());
     }

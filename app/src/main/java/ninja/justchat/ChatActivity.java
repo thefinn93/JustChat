@@ -16,7 +16,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -137,6 +139,7 @@ public class ChatActivity extends ActionBarActivity
         private static final String ARG_SECTION_NUMBER = "section_number";
 
         private ArrayList<String> chatLogList = new ArrayList<>();
+        private ArrayAdapter<String> chatLogAdapter;
 
         /**
          * Returns a new instance of this fragment for the given section
@@ -168,19 +171,14 @@ public class ChatActivity extends ActionBarActivity
             editText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
                 @Override
                 public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                    TextView chatLog = (TextView) getActivity().findViewById(R.id.chatLog);
+                    ListView chatLog = (ListView) getActivity().findViewById(R.id.chatLog);
+                    chatLogAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, chatLogList);
+                    chatLog.setAdapter(chatLogAdapter);
                     // Send message to server
                     new SecureConnection().execute("sendmsg?msg=" + editTextChatLog.getText().toString());
                     // Add it to the list
-                    chatLog.setMovementMethod(new ScrollingMovementMethod());
                     chatLogList.add(name + ">" + editTextChatLog.getText().toString());
-                    String chatLogStr = "";
-                    for (int a = 0; a < chatLogList.size(); a++)
-                    {
-                        chatLogStr += chatLogList.get(a) + "\n\n";
-                    }
-                    chatLog.setText(chatLogStr);
-                    chatLog.scrollTo(0, chatLog.getLayout().getLineTop(chatLog.getLineCount()) - chatLog.getHeight());
+                    //chatLog.scrollTo(0, chatLog.getLayout().getLineTop(chatLog.getLineCount()) - chatLog.getHeight());
                     v.setText("");
                     return true;
                 }

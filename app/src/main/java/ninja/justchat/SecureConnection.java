@@ -86,7 +86,12 @@ public class SecureConnection extends AsyncTask<JSONObject, Object, Object> {
 
     protected void onPostExecute(Object result) {
         // TODO: catch any issues with the execution of the task, handle them logically
-        doAPICallback((String) result);
+        try {
+            String responseText = (String) result;
+            doAPICallback(responseText);
+        } catch(Exception ex) {
+            ex.printStackTrace();
+        }
     }
 
     protected void doAPICallback(String result) {

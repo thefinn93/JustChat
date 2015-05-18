@@ -16,4 +16,9 @@ public class SecureConnectionCallback implements onAPIResponse {
     public void onAPIResponse(JSONObject result) {
         Log.d("ConnectionCB", result.toString());
     }
+
+    @Override
+    public void onAPIResponse(Exception error) {
+        error.printStackTrace();
+    }
 }

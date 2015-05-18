@@ -10,5 +10,6 @@ import org.json.JSONObject;
 
 public interface onAPIResponse {
     void onAPIResponse(JSONObject result);
+    void onAPIResponse(Exception error);
 }
 

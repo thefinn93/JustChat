@@ -87,20 +87,10 @@ public class SecureConnection extends AsyncTask<JSONObject, Object, Object> {
     protected void onPostExecute(Object result) {
         // TODO: catch any issues with the execution of the task, handle them logically
         try {
-            String responseText = (String) result;
-            doAPICallback(responseText);
-        } catch(Exception ex) {
-            ex.printStackTrace();
-        }
-    }
-
-    protected void doAPICallback(String result) {
-        Log.d("APICallback", result);
-        try {
-            JSONObject jsonResponse = new JSONObject(result);
+            JSONObject jsonResponse = new JSONObject((String) result);
             listener.onAPIResponse(jsonResponse);
-        } catch (JSONException e) {
-            e.printStackTrace();
+        } catch(Exception ex) {
+            listener.onAPIResponse(ex);
         }
     }
 }

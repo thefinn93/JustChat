@@ -2,6 +2,7 @@ package ninja.justchat;
 
 import android.util.Log;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
@@ -14,7 +15,11 @@ import org.json.JSONObject;
 public class SecureConnectionCallback implements onAPIResponse {
     @Override
     public void onAPIResponse(JSONObject result) {
-        Log.d("ConnectionCB", result.toString());
+        try {
+            Log.d("ConnectionCB", result.get("wat").toString());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

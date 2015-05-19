@@ -78,13 +78,14 @@ public class SecureConnection extends AsyncTask<JSONObject, Object, Object> {
             Log.e("doInBackground", ex.toString());
 
             // Prepare return value
-            result = ex;
+            listener.onAPIResponse(ex);
+            result = null;
         }
 
         return result;
     }
 
-    protected void onPostExecute(Object result) {
+    protected void onPostExecute(String result) {
         // TODO: catch any issues with the execution of the task, handle them logically
         try {
             JSONObject jsonResponse = new JSONObject((String) result);

@@ -78,7 +78,7 @@ public class GenerateKeyPair implements Runnable {
      * Generates a public/private RSA key pair 4096 bits in length. Excessive? You bet. Secure? maybe
      */
     private static KeyPair generateKeyPair() throws NoSuchAlgorithmException {
-        KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance("RSA");
+        KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance("RSA"); // TODO: Use a secure PRNG (http://android-developers.blogspot.com/2013/08/some-securerandom-thoughts.html)
         keyPairGenerator.initialize(4096);
         KeyPair keyPair = keyPairGenerator.genKeyPair();
         return keyPair;

@@ -9,7 +9,6 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
-import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -171,9 +170,8 @@ public class ChatActivity extends ActionBarActivity
         public void onActivityCreated(Bundle savedInstanceState) {
             super.onActivityCreated(savedInstanceState);
 
-            EditText editText = (EditText) getActivity().findViewById(R.id.entryBox);
             final EditText editTextChatLog = (EditText) getActivity().findViewById(R.id.entryBox);
-            editText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            editTextChatLog.setOnEditorActionListener(new TextView.OnEditorActionListener() {
                 @Override
                 public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                     ListView chatLog = (ListView) getActivity().findViewById(R.id.chatLog);

@@ -85,13 +85,15 @@ public class SecureConnection extends AsyncTask<JSONObject, Object, Object> {
         return result;
     }
 
-    protected void onPostExecute(String result) {
-        // TODO: catch any issues with the execution of the task, handle them logically
-        try {
-            JSONObject jsonResponse = new JSONObject((String) result);
-            listener.onAPIResponse(jsonResponse);
-        } catch(Exception ex) {
-            listener.onAPIResponse(ex);
+    @Override
+    protected void onPostExecute(Object result) {
+        if(result != null) {
+            try {
+                JSONObject jsonResponse = new JSONObject((String) result);
+                listener.onAPIResponse(jsonResponse);
+            } catch (Exception ex) {
+                listener.onAPIResponse(ex);
+            }
         }
     }
 }

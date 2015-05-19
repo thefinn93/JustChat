@@ -96,10 +96,10 @@ public class NameDialog implements View.OnClickListener {
                 thread.start();
 
                 // Save the username to our preferences file under R.string.user_name
-//                SharedPreferences sharedPref = current.getPreferences(Context.MODE_PRIVATE);
-//                SharedPreferences.Editor editor = sharedPref.edit();
-//                editor.putString(String.valueOf((R.string.user_name)), ChatActivity.name);
-//                editor.commit();
+                SharedPreferences sharedPref = current.getPreferences(Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = sharedPref.edit();
+                editor.putString(String.valueOf((R.string.user_name)), ChatActivity.name);
+                editor.commit();
 
             }
 

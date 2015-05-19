@@ -92,13 +92,6 @@ public class NameDialog implements View.OnClickListener {
         });
 
         nameDialogBuilder.show();
-
-//        nameDialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-//            @Override
-//            public void onClick(DialogInterface dialog, int which) {
-//
-//            }
-//        });
     }
 
     private Handler handler = new Handler() {

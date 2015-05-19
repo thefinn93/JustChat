@@ -3,14 +3,18 @@ package ninja.justchat;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 /**
 * Created by Brad Minogue on 4/28/2015.
 */
-public class NameDialog implements View.OnClickListener{
+public class NameDialog implements View.OnClickListener {
     Dialog nameDialog;
     ChatActivity current;
     public NameDialog(ChatActivity current)
@@ -41,7 +45,15 @@ public class NameDialog implements View.OnClickListener{
                 editor.putString(String.valueOf((R.string.user_name)),
                         editText.getText().toString());
                 editor.commit();
-                new SecureConnection().execute("register?name=" + editText.getText().toString());
+                JSONObject dataToSend = new JSONObject();
+                try {
+                    dataToSend.put("action", "register");
+                    dataToSend.put("name", editText.getText().toString());
+                } catch(JSONException e) {
+                    Log.e("JSONEncoding", e.toString());
+                    e.printStackTrace();
+                }
+                new SecureConnection(new SecureConnectionCallback()).execute(dataToSend);
                 nameDialog.cancel();
             }
         });

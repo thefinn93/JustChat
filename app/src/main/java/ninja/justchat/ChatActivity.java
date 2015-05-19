@@ -10,6 +10,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.text.method.ScrollingMovementMethod;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -20,6 +21,9 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 
@@ -175,7 +179,20 @@ public class ChatActivity extends ActionBarActivity
                     chatLogAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, chatLogList);
                     chatLog.setAdapter(chatLogAdapter);
                     // Send message to server
-                    new SecureConnection().execute("sendmsg?msg=" + editTextChatLog.getText().toString());
+                    JSONObject dataToSend = new JSONObject();
+                    try {
+                        dataToSend.put("action", "sendmsg");
+                        dataToSend.put("message", editTextChatLog.getText().toString());
+                    } catch(JSONException e) {
+                        Log.e("JSONEncoding", e.toString());
+                        e.printStackTrace();
+                    }
+
+                    // Network code
+                    SecureConnectionCallback callback = new SecureConnectionCallback();
+                    new SecureConnection(callback).execute(dataToSend);
+
+
                     // Add it to the list
                     chatLogList.add(name + ">" + editTextChatLog.getText().toString());
                     //chatLog.scrollTo(0, chatLog.getLayout().getLineTop(chatLog.getLineCount()) - chatLog.getHeight());
@@ -191,6 +208,10 @@ public class ChatActivity extends ActionBarActivity
             ((ChatActivity) activity).onSectionAttached(
                     getArguments().getInt(ARG_SECTION_NUMBER));
         }
+    }
+
+    public void onAPIResponse(JSONObject result) {
+        Log.d("onAPIResponse", result.toString());
     }
 
 }

@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Handler;
 import android.os.Message;
@@ -51,7 +52,6 @@ import java.security.NoSuchAlgorithmException;
 */
 public class NameDialog implements View.OnClickListener {
 
-    Dialog nameDialog;
     ChatActivity current;
     private ProgressDialog pd;
 
@@ -64,31 +64,19 @@ public class NameDialog implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
-        //Basic initialization of class
-        nameDialog = new Dialog(current);
-        nameDialog.setTitle("Set User Name");
-        nameDialog.setContentView(R.layout.name_dialog_layout);
-        nameDialog.show();
-        //These three items are our input.
-        final EditText editText =(EditText)nameDialog.findViewById(R.id.user_name_text_box);
-        Button submitButton = (Button)nameDialog.findViewById(R.id.ok_button);
-        Button cancelButton = (Button)nameDialog.findViewById(R.id.cancel_button);
-        // upon submission we need to save our input and close the dialog
-        submitButton.setOnClickListener(new View.OnClickListener() {
 
-            private Handler handler = new Handler() {
+        AlertDialog.Builder nameDialogBuilder = new AlertDialog.Builder(current);
+        nameDialogBuilder.setTitle("Select name");
+        nameDialogBuilder.setMessage("Select a name to identify yourself");
 
-                @Override
-                public void handleMessage(Message msg) {
-                    pd.dismiss();
-                }
-            };
+        final EditText editText = (EditText) new EditText(current);
+        nameDialogBuilder.setView(editText);
 
+        nameDialogBuilder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(DialogInterface dialog, int which) {
                 // Store the name somewhere
                 ChatActivity.name = editText.getText().toString();
-                nameDialog.dismiss();
 
                 // Create a progress dialog to show while we're generating the cert
                 pd = ProgressDialog.show(current, "Generating Key Pair", "Sit tight, this only has to happen once", true, false);
@@ -100,17 +88,24 @@ public class NameDialog implements View.OnClickListener {
                 SharedPreferences.Editor editor = sharedPref.edit();
                 editor.putString(String.valueOf((R.string.user_name)), ChatActivity.name);
                 editor.commit();
-
-            }
-
-        });
-
-        //the only thing we need to do onclick for our cancle button is close the dialog
-        cancelButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick (View v){
-                nameDialog.cancel();
             }
         });
+
+        nameDialogBuilder.show();
+
+//        nameDialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+//            @Override
+//            public void onClick(DialogInterface dialog, int which) {
+//
+//            }
+//        });
     }
+
+    private Handler handler = new Handler() {
+
+        @Override
+        public void handleMessage(Message msg) {
+            pd.dismiss();
+        }
+    };
 }

@@ -25,10 +25,16 @@ import android.widget.TextView;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.security.Security;
 import java.util.ArrayList;
 
 public class ChatActivity extends ActionBarActivity
         implements NavigationDrawerFragment.NavigationDrawerCallbacks {
+
+    static {
+        // TODO: Figure out where the hell this goes.
+        Security.insertProviderAt(new org.spongycastle.jce.provider.BouncyCastleProvider(), 1);
+    }
 
     /**
      * Fragment managing the behaviors, interactions and presentation of the navigation drawer.

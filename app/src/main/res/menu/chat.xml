@@ -7,6 +7,4 @@
         android:orderInCategory="100" app:showAsAction="never" />
     <item android:id="@+id/action_part" android:title="@string/action_part"
         android:orderInCategory="100" app:showAsAction="never" />
-    <item android:id="@+id/action_name" android:title="Change name"
-        android:orderInCategory="100" app:showAsAction="never" />
 </menu>

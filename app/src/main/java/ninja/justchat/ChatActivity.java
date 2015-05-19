@@ -124,11 +124,6 @@ public class ChatActivity extends ActionBarActivity
             return true;
         }
 
-        if (id == R.id.action_name) {
-            new NameDialog(ChatActivity.this).onClick(new View(this));
-            return true;
-        }
-
         return super.onOptionsItemSelected(item);
     }
 

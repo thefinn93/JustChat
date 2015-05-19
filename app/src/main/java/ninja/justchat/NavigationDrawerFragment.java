@@ -22,12 +22,18 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import java.io.Console;
+import java.util.ArrayList;
+
 /**
  * Fragment used for managing interactions for and presentation of a navigation drawer.
  * See the <a href="https://developer.android.com/design/patterns/navigation-drawer.html#Interaction">
  * design guidelines</a> for a complete explanation of the behaviors implemented here.
  */
 public class NavigationDrawerFragment extends Fragment {
+
+    private ArrayList<String> channels = new ArrayList<>();
+    private ArrayAdapter<String> channelAdapter;
 
     /**
      * Remember the position of the selected item.
@@ -61,9 +67,24 @@ public class NavigationDrawerFragment extends Fragment {
     public NavigationDrawerFragment() {
     }
 
+    public static final NavigationDrawerFragment newInstance(ArrayList<String> channels) {
+        NavigationDrawerFragment navigationDrawerFragment = new NavigationDrawerFragment();
+        Bundle bundle = new Bundle(1);
+        bundle.putStringArrayList("channels", channels);
+        navigationDrawerFragment.setArguments(bundle);
+        return navigationDrawerFragment;
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        //channels = getArguments().getStringArrayList("channels");
+        //channels.add("Chennel");
+
+        //for (int a = 0; a < getArguments().getStringArrayList("channels").size(); a++) {
+        //    this.channels.add(getArguments().getStringArrayList("channels").get(a));
+        //}
 
         // Read in the flag indicating whether or not the user has demonstrated awareness of the
         // drawer. See PREF_USER_LEARNED_DRAWER for details.
@@ -97,15 +118,17 @@ public class NavigationDrawerFragment extends Fragment {
                 selectItem(position);
             }
         });
-        mDrawerListView.setAdapter(new ArrayAdapter<String>(
-                getActionBar().getThemedContext(),
-                android.R.layout.simple_list_item_activated_1,
-                android.R.id.text1,
-                new String[]{
-                        getString(R.string.title_section1),
-                        getString(R.string.title_section2),
-                        getString(R.string.title_section3),
-                }));
+        channelAdapter = new ArrayAdapter<String>(getActionBar().getThemedContext(), android.R.layout.simple_list_item_1, channels);
+        mDrawerListView.setAdapter(channelAdapter);
+        //mDrawerListView.setAdapter(new ArrayAdapter<String>(
+        //        getActionBar().getThemedContext(),
+        //        android.R.layout.simple_list_item_activated_1,
+        //        android.R.id.text1,
+        //        new String[]{
+        //                getString(R.string.title_section1),
+        //                getString(R.string.title_section2),
+        //                getString(R.string.title_section3),
+        //        }));
         mDrawerListView.setItemChecked(mCurrentSelectedPosition, true);
         return mDrawerListView;
     }

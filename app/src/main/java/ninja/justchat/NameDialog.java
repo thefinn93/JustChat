@@ -33,7 +33,7 @@ public class NameDialog implements View.OnClickListener {
         //These three items are our input.
         final EditText editText =(EditText)nameDialog.findViewById(R.id.user_name_text_box);
         Button submitButton = (Button)nameDialog.findViewById(R.id.ok_button);
-        Button cancleButton = (Button)nameDialog.findViewById(R.id.cancel_button);
+        Button cancelButton = (Button)nameDialog.findViewById(R.id.cancel_button);
         //upon submision we need to save our input and close the dialog
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -58,7 +58,7 @@ public class NameDialog implements View.OnClickListener {
             }
         });
         //the only thing we need to do onclick for our cancle button is close the dialog
-        cancleButton.setOnClickListener(new View.OnClickListener() {
+        cancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 nameDialog.cancel();

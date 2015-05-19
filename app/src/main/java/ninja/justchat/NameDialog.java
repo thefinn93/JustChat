@@ -29,16 +29,24 @@ public class NameDialog implements View.OnClickListener {
         this.current = current;
     }
 
-
     @Override
     public void onClick(View v) {
+        onClick(v, null, null);
+    }
 
+    public void onClick(View v, String CN, String error) {
         AlertDialog.Builder nameDialogBuilder = new AlertDialog.Builder(current);
         nameDialogBuilder.setTitle("Select name");
         nameDialogBuilder.setMessage("Select a name to identify yourself");
 
         final EditText editText = new EditText(current);
         nameDialogBuilder.setView(editText);
+        if(CN != null) {
+            editText.setText(CN);
+        }
+        if(error != null) {
+            editText.setError(error);
+        }
 
         nameDialogBuilder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
             @Override
@@ -48,14 +56,17 @@ public class NameDialog implements View.OnClickListener {
 
                 // Create a progress dialog to show while we're generating the cert
                 pd = ProgressDialog.show(current, "Generating Key Pair", "Sit tight, this only has to happen once", true, false);
-                Thread thread = new Thread(new GenerateKeyPair(handler));
+                Thread thread = new Thread(new GenerateKeyPair(handler, current));
                 thread.start();
 
                 // Save the username to our preferences file under R.string.user_name
-                SharedPreferences sharedPref = current.getPreferences(Context.MODE_PRIVATE);
-                SharedPreferences.Editor editor = sharedPref.edit();
-                editor.putString(String.valueOf((R.string.user_name)), ChatActivity.name);
-                editor.apply();
+                // Only save if we're not debugging
+                if (!BuildConfig.DEBUG) {
+                    SharedPreferences sharedPref = current.getPreferences(Context.MODE_PRIVATE);
+                    SharedPreferences.Editor editor = sharedPref.edit();
+                    editor.putString(String.valueOf((R.string.username)), ChatActivity.name);
+                    editor.apply();
+                }
             }
         });
 

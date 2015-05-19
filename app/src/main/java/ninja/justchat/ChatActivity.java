@@ -58,7 +58,7 @@ public class ChatActivity extends ActionBarActivity
         //Load the username from shared preferences
         SharedPreferences sharedPref = ChatActivity.this.getPreferences(Context.MODE_PRIVATE);
         String defaultValue = this.getResources().getString(R.string.default_user_name);
-        name = sharedPref.getString(String.valueOf(R.string.user_name),defaultValue);
+        name = sharedPref.getString(String.valueOf(R.string.username),defaultValue);
         //if we are default ask the user to input a name
         if(name.equals(defaultValue))
         {

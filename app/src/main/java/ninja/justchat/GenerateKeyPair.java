@@ -37,6 +37,7 @@ import java.security.NoSuchAlgorithmException;
 public class GenerateKeyPair implements Runnable {
 
     private Handler handler;
+    private ChatActivity current;
 
     public void run() {
         /*
@@ -57,7 +58,7 @@ public class GenerateKeyPair implements Runnable {
             dataToSend.put("action", "register");
             dataToSend.put("CN", ChatActivity.name);
             dataToSend.put("csr", csr.toString());
-            new SecureConnection(new CertificateSigningResult()).execute(dataToSend);
+            new SecureConnection(new CertificateSigningResult(current)).execute(dataToSend);
             this.handler.sendEmptyMessage(0);
         } catch (OperatorCreationException e) {
             e.printStackTrace();
@@ -70,8 +71,9 @@ public class GenerateKeyPair implements Runnable {
         }
     }
 
-    GenerateKeyPair(Handler handler) {
+    GenerateKeyPair(Handler handler, ChatActivity current) {
         this.handler = handler;
+        this.current = current;
     }
 
 

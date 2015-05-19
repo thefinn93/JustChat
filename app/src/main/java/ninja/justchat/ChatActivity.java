@@ -51,6 +51,9 @@ public class ChatActivity extends ActionBarActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
 
+        // Fix the PRNG on Android 4.3 (and below, although we don't support <4.3 for other reasons)
+        PRNGFixes.apply();
+
         mNavigationDrawerFragment = (NavigationDrawerFragment)
                 getSupportFragmentManager().findFragmentById(R.id.navigation_drawer);
         mTitle = getTitle();

@@ -30,9 +30,6 @@ import java.util.ArrayList;
 public class ChatActivity extends ActionBarActivity
         implements NavigationDrawerFragment.NavigationDrawerCallbacks {
 
-    public ArrayList<Channel> channels = new ArrayList<>();
-    public ArrayList<String> channelNamess = new ArrayList<>();
-
     /**
      * Fragment managing the behaviors, interactions and presentation of the navigation drawer.
      */
@@ -83,13 +80,13 @@ public class ChatActivity extends ActionBarActivity
     public void onSectionAttached(int number) {
         switch (number) {
             case 1:
-                //mTitle = getString(R.string.title_section1);
+                mTitle = getString(R.string.title_section1);
                 break;
             case 2:
-                //mTitle = getString(R.string.title_section2);
+                mTitle = getString(R.string.title_section2);
                 break;
             case 3:
-                //mTitle = getString(R.string.title_section3);
+                mTitle = getString(R.string.title_section3);
                 break;
         }
     }
@@ -140,7 +137,7 @@ public class ChatActivity extends ActionBarActivity
          */
         private static final String ARG_SECTION_NUMBER = "section_number";
 
-        private Channel currentChannel;
+        private ArrayList<String> chatLogList = new ArrayList<>();
         private ArrayAdapter<String> chatLogAdapter;
 
         /**
@@ -174,7 +171,7 @@ public class ChatActivity extends ActionBarActivity
                 @Override
                 public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                     ListView chatLog = (ListView) getActivity().findViewById(R.id.chatLog);
-                    chatLogAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, currentChannel.chatLog);
+                    chatLogAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, chatLogList);
                     chatLog.setAdapter(chatLogAdapter);
                     // Send message to server
                     JSONObject dataToSend = new JSONObject();
@@ -192,7 +189,7 @@ public class ChatActivity extends ActionBarActivity
 
 
                     // Add it to the list
-                    currentChannel.chatLog.add(name + ">" + editTextChatLog.getText().toString());
+                    chatLogList.add(name + ">" + editTextChatLog.getText().toString());
                     //chatLog.scrollTo(0, chatLog.getLayout().getLineTop(chatLog.getLineCount()) - chatLog.getHeight());
                     v.setText("");
                     return true;

@@ -38,19 +38,17 @@ public final class PublicKeyManager implements X509TrustManager {
     public void checkServerTrusted(X509Certificate[] chain, String authType)
             throws CertificateException {
 
-        assert (chain != null);
         if (chain == null) {
             throw new IllegalArgumentException(
                     "checkServerTrusted: X509Certificate array is null");
         }
 
-        assert (chain.length > 0);
+
         if (!(chain.length > 0)) {
             throw new IllegalArgumentException(
                     "checkServerTrusted: X509Certificate is empty");
         }
 
-        assert (null != authType && authType.equalsIgnoreCase("ECDHE_RSA"));
         if (!(null != authType && authType.equalsIgnoreCase("ECDHE_RSA"))) {
             Log.d("PublicKeyManager", "Auth type is " + authType);
             throw new CertificateException(
@@ -81,7 +79,6 @@ public final class PublicKeyManager implements X509TrustManager {
 
         // Pin it!
         final boolean expected = PUB_KEY.equalsIgnoreCase(encoded);
-        assert(expected);
         if (!expected) {
             throw new CertificateException(
                     "checkServerTrusted: Expected public key: " + PUB_KEY

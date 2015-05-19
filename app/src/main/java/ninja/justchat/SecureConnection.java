@@ -48,6 +48,7 @@ public class SecureConnection extends AsyncTask<JSONObject, Object, Object> {
             URL url = new URL( "https://justchat.finn.ninja/endpoint" );
 
             HttpsURLConnection connection = (HttpsURLConnection) url.openConnection();
+            connection.setRequestProperty("Content-Type", "application/json");
             assert (null != connection);
 
             connection.setDoOutput(true);

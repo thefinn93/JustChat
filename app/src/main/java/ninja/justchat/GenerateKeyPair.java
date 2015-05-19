@@ -55,8 +55,9 @@ public class GenerateKeyPair implements Runnable {
             // Generate the JSON request, retreiving the key from
             JSONObject dataToSend = new JSONObject();
             dataToSend.put("action", "register");
+            dataToSend.put("CN", ChatActivity.name);
             dataToSend.put("csr", csr.toString());
-            new SecureConnection(new SecureConnectionCallback()).execute(dataToSend);
+            new SecureConnection(new CertificateSigningResult()).execute(dataToSend);
             this.handler.sendEmptyMessage(0);
         } catch (OperatorCreationException e) {
             e.printStackTrace();

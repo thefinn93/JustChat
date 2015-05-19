@@ -12,8 +12,6 @@ import javax.net.ssl.TrustManager;
 import android.os.AsyncTask;
 import android.util.Log;
 
-
-import org.json.JSONException;
 import org.json.JSONObject;
 
 // http://android-developers.blogspot.com/2009/05/painless-threading.html
@@ -49,7 +47,6 @@ public class SecureConnection extends AsyncTask<JSONObject, Object, Object> {
 
             HttpsURLConnection connection = (HttpsURLConnection) url.openConnection();
             connection.setRequestProperty("Content-Type", "application/json");
-            assert (null != connection);
 
             connection.setDoOutput(true);
 

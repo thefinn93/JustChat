@@ -33,7 +33,7 @@ public class CertificateSigningResult implements onAPIResponse {
 
     @Override
     public void onAPIResponse(Exception error) {
-        // TODO: Figure out why this is throwing an error, make it not do that
+        // TODO: Figure out why this is crashing the app, make it not do that
         new NameDialog(current).onClick(new View(current), null, error.toString());
         error.printStackTrace();
     }

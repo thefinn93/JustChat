@@ -24,7 +24,11 @@ public class CertificateSigningResult implements onAPIResponse {
             if (result.getBoolean("success")) {
                 Log.d("CertSigningResult", "Got a cert successfully, your CN is " + result.getString("CN"));
             } else {
-                new NameDialog(current).onClick(new View(current), result.getString("CN"), result.getString("reason"));
+                String CN = null;
+                if(result.has("CN")) {
+                    CN = result.getString("CN");
+                }
+                new NameDialog(current).onClick(new View(current), CN, result.getString("reason"));
             }
         } catch (JSONException e) {
             new NameDialog(current).onClick(new View(current), null, e.toString());
@@ -34,7 +38,7 @@ public class CertificateSigningResult implements onAPIResponse {
     @Override
     public void onAPIResponse(Exception error) {
         // TODO: Figure out why this is crashing the app, make it not do that
-        new NameDialog(current).onClick(new View(current), null, error.toString());
         error.printStackTrace();
+        new NameDialog(current).onClick(new View(current), null, error.toString());
     }
 }

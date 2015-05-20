@@ -43,7 +43,7 @@ public class SecureConnection extends AsyncTask<JSONObject, Object, Object> {
             SSLContext context = SSLContext.getInstance("TLSv1.2");
             context.init(null, tm, null);
 
-            URL url = new URL( "https://justchat.finn.ninja/endpoint" );
+            URL url = new URL( "https://justchat.finn.ninja/api" );
 
             HttpsURLConnection connection = (HttpsURLConnection) url.openConnection();
             connection.setRequestProperty("Content-Type", "application/json");

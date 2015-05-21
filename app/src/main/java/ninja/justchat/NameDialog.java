@@ -30,9 +30,7 @@ public class NameDialog implements View.OnClickListener {
     ChatActivity current;
     private ProgressDialog pd;
 
-    public NameDialog(ChatActivity current)
-    {
-        //This needs current for referencing view and resources
+    public NameDialog(ChatActivity current) {
         this.current = current;
     }
 
@@ -77,7 +75,14 @@ public class NameDialog implements View.OnClickListener {
 
         @Override
         public void handleMessage(Message msg) {
-            pd.dismiss();
+            switch(msg.what) {
+                case 0:
+                    pd.setTitle("Certificate Generated!");
+                    pd.setMessage("Authenticating with the server...");
+                    break;
+                default:
+                    pd.dismiss();
+            }
         }
     };
 }

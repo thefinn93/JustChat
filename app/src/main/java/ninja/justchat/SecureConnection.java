@@ -100,11 +100,17 @@ public class SecureConnection extends AsyncTask<JSONObject, Object, Object> {
     @Override
     protected void onPostExecute(Object result) {
         if(result != null) {
-            try {
-                JSONObject jsonResponse = new JSONObject((String) result);
-                listener.onAPIResponse(jsonResponse);
-            } catch (Exception ex) {
-                listener.onAPIResponse(ex);
+            if(result instanceof String) {
+                try {
+                    JSONObject jsonResponse = new JSONObject((String) result);
+                    listener.onAPIResponse(jsonResponse);
+                } catch (Exception ex) {
+                    listener.onAPIResponse(ex);
+                }
+            } else if(result instanceof Exception) {
+                listener.onAPIResponse((Exception) result);
+            } else {
+                Log.e("BadResponseType", "onPostExecute gave us something else...");
             }
         }
     }

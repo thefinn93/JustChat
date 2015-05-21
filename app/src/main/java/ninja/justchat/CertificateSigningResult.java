@@ -2,6 +2,7 @@ package ninja.justchat;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
@@ -33,14 +34,17 @@ public class CertificateSigningResult implements onAPIResponse {
 
     private ChatActivity current;
     private KeyPair keypair;
+    private Handler handler;
 
-    CertificateSigningResult(ChatActivity current, KeyPair keypair) {
+    CertificateSigningResult(ChatActivity current, KeyPair keypair, Handler handler) {
         this.current = current;
         this.keypair = keypair;
+        this.handler = handler;
     }
 
     @Override
     public void onAPIResponse(JSONObject result) {
+        handler.sendEmptyMessage(1);
         try {
             Log.d("CertSigningResult", result.toString());
             if (result.getBoolean("success")) {

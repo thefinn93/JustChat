@@ -91,8 +91,7 @@ public class SecureConnection extends AsyncTask<JSONObject, Object, Object> {
             Log.e("doInBackground", ex.toString());
 
             // Prepare return value
-            listener.onAPIResponse(ex);
-            result = null;
+            result = ex;
         }
 
         return result;

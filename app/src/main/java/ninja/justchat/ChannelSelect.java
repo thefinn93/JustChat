@@ -59,9 +59,7 @@ public class ChannelSelect implements View.OnClickListener {
 
                 // Create a progress dialog to show while we're generating the cert
                 pd = ProgressDialog.show(current, "Generating Key Pair", "Sit tight, this only has to happen once", true, false);
-                Thread thread = new Thread(new GenerateKeyPair(handler, current));
-                thread.start();
-
+                
                 // Save the username to our preferences file under R.string.user_name
                 // Only save if we're not debugging
                 if (!BuildConfig.DEBUG) {
@@ -76,11 +74,4 @@ public class ChannelSelect implements View.OnClickListener {
         channelSelectBuilder.show();
     }
 
-    private Handler handler = new Handler() {
-
-        @Override
-        public void handleMessage(Message msg) {
-            pd.dismiss();
-        }
-    };
 }

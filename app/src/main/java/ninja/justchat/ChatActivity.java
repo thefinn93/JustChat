@@ -25,7 +25,19 @@ import android.widget.TextView;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.security.KeyStore;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
+import java.security.NoSuchProviderException;
+import java.security.UnrecoverableKeyException;
+import java.security.cert.CertificateException;
 import java.util.ArrayList;
+
+import javax.net.ssl.KeyManager;
+import javax.net.ssl.KeyManagerFactory;
 
 public class ChatActivity extends ActionBarActivity
         implements NavigationDrawerFragment.NavigationDrawerCallbacks {
@@ -39,6 +51,7 @@ public class ChatActivity extends ActionBarActivity
      * Used to store the last screen title. For use in {@link #restoreActionBar()}.
      */
     private CharSequence mTitle;
+    static private KeyManager[] keymanagers;
 
     static public String name = "";
     @Override
@@ -55,15 +68,43 @@ public class ChatActivity extends ActionBarActivity
                 R.id.navigation_drawer,
                 (DrawerLayout) findViewById(R.id.drawer_layout));
 
-        //Load the username from shared preferences
-        SharedPreferences sharedPref = ChatActivity.this.getPreferences(Context.MODE_PRIVATE);
-        String defaultValue = this.getResources().getString(R.string.default_user_name);
-        name = sharedPref.getString(String.valueOf(R.string.username),defaultValue);
-        //if we are default ask the user to input a name
-        if(name.equals(defaultValue))
-        {
+        // Setup the key store and try to load the saved
+        boolean certloaded = false;
+        try {
+            KeyStore keystore = KeyStore.getInstance("BKS", "SC");
+            FileInputStream fis = ChatActivity.this.openFileInput("user.ks");
+            keystore.load(fis, "PcSo9XngI6pvbwRM8aCs7ZE4RHwGxnau".toCharArray());
+            if(keystore.containsAlias("JustChatUser")) {
+
+                KeyManagerFactory kmf = KeyManagerFactory.getInstance("X509");
+                kmf.init(keystore, "PcSo9XngI6pvbwRM8aCs7ZE4RHwGxnau".toCharArray());
+                keymanagers = kmf.getKeyManagers();
+
+                SharedPreferences sharedPref = ChatActivity.this.getPreferences(Context.MODE_PRIVATE);
+                String defaultValue = this.getResources().getString(R.string.default_user_name);
+                name = sharedPref.getString(String.valueOf(R.string.username),defaultValue);
+                certloaded = true;
+            }
+        } catch (KeyStoreException e) {
+            e.printStackTrace();
+        } catch (NoSuchProviderException e) {
+            e.printStackTrace();
+        } catch (FileNotFoundException e) {
+            Log.d("CertLoader", "user.ks not found! Entering welcome dialog");
+        } catch (CertificateException e) {
+            e.printStackTrace();
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (UnrecoverableKeyException e) {
+            e.printStackTrace();
+        }
+        if(!certloaded) {
             new NameDialog(ChatActivity.this).onClick(new View(this));
         }
+
+
     }
     public ChatActivity()
     {
@@ -185,7 +226,7 @@ public class ChatActivity extends ActionBarActivity
 
                     // Network code
                     SecureConnectionCallback callback = new SecureConnectionCallback();
-                    new SecureConnection(callback).execute(dataToSend);
+                    new SecureConnection(callback, keymanagers).execute(dataToSend);
 
 
                     // Add it to the list

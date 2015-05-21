@@ -11,6 +11,12 @@ import android.text.InputType;
 import android.view.View;
 import android.widget.EditText;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.security.KeyStore;
+import java.security.KeyStoreException;
+import java.security.NoSuchProviderException;
+
 
 /**
 * Created by Brad Minogue on 4/28/2015.
@@ -61,15 +67,6 @@ public class NameDialog implements View.OnClickListener {
                 pd = ProgressDialog.show(current, "Generating Key Pair", "Sit tight, this only has to happen once", true, false);
                 Thread thread = new Thread(new GenerateKeyPair(handler, current));
                 thread.start();
-
-                // Save the username to our preferences file under R.string.user_name
-                // Only save if we're not debugging
-                if (!BuildConfig.DEBUG) {
-                    SharedPreferences sharedPref = current.getPreferences(Context.MODE_PRIVATE);
-                    SharedPreferences.Editor editor = sharedPref.edit();
-                    editor.putString(String.valueOf((R.string.username)), ChatActivity.name);
-                    editor.apply();
-                }
             }
         });
 

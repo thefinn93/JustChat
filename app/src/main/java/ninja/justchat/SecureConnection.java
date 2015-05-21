@@ -4,12 +4,20 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.URL;
+import java.security.KeyStore;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
+import java.security.UnrecoverableKeyException;
 
 import javax.net.ssl.HttpsURLConnection;
+import javax.net.ssl.KeyManager;
+import javax.net.ssl.KeyManagerFactory;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManager;
+import javax.net.ssl.TrustManagerFactory;
 
 import android.os.AsyncTask;
+import android.provider.Settings;
 import android.util.Log;
 
 import org.json.JSONObject;
@@ -18,9 +26,16 @@ import org.json.JSONObject;
 public class SecureConnection extends AsyncTask<JSONObject, Object, Object> {
 
     private onAPIResponse listener;
+    private KeyManager[] keymanagers;
 
     public SecureConnection(onAPIResponse listener) {
         this.listener = listener;
+        this.keymanagers = null;
+    }
+
+    public SecureConnection(onAPIResponse listener, KeyManager[] keystore) {
+        this.listener = listener;
+        this.keymanagers = keymanagers;
     }
 
     @Override
@@ -41,7 +56,7 @@ public class SecureConnection extends AsyncTask<JSONObject, Object, Object> {
             assert (null != tm);
 
             SSLContext context = SSLContext.getInstance("TLSv1.2");
-            context.init(null, tm, null);
+            context.init(keymanagers, tm, null);
 
             URL url = new URL( "https://justchat.finn.ninja/api" );
 

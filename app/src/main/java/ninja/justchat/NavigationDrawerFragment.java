@@ -11,6 +11,8 @@ import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.view.ContextMenu;
+import android.view.ContextMenu.ContextMenuInfo;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -78,7 +80,7 @@ public class NavigationDrawerFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        channels.add("Chennel");
         //channels = getArguments().getStringArrayList("channels");
         //channels.add("Chennel");
 
@@ -120,6 +122,8 @@ public class NavigationDrawerFragment extends Fragment {
         });
         channelAdapter = new ArrayAdapter<String>(getActionBar().getThemedContext(), android.R.layout.simple_list_item_1, channels);
         mDrawerListView.setAdapter(channelAdapter);
+        registerForContextMenu(mDrawerListView);
+
         //mDrawerListView.setAdapter(new ArrayAdapter<String>(
         //        getActionBar().getThemedContext(),
         //        android.R.layout.simple_list_item_activated_1,
@@ -131,6 +135,36 @@ public class NavigationDrawerFragment extends Fragment {
         //        }));
         mDrawerListView.setItemChecked(mCurrentSelectedPosition, true);
         return mDrawerListView;
+    }
+
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
+        if (v.getId()==R.id.channelList) {
+            AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo)menuInfo;
+            menu.setHeaderTitle(channels.get(info.position));
+            String[] menuItems = getResources().getStringArray(R.array.channel_select_context);
+            for (int a = 0; a < menuItems.length; a++) {
+                menu.add(Menu.NONE, a, a, menuItems[a]);
+            }
+        }
+    }
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo)item.getMenuInfo();
+        int menuItemIndex = item.getItemId();
+        String[] menuItems = getResources().getStringArray(R.array.channel_select_context);
+        String menutItemName = menuItems[menuItemIndex];
+        String listItemName = channels.get(info.position);
+        switch (menutItemName) {
+            case "Join":
+
+                break;
+            case "Leave":
+
+                break;
+        }
+        return true;
     }
 
     public boolean isDrawerOpen() {

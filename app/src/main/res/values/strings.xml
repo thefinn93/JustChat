@@ -13,4 +13,5 @@
     <string name="action_part">Leave this channel</string>
     <string name="username"></string>
     <string name="default_user_name">Guest</string>
+    <string-array name="channel_select_context"><item>Join</item><item>Leave</item></string-array>
 </resources>

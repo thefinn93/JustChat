@@ -28,7 +28,7 @@ import java.security.NoSuchProviderException;
 public class NameDialog implements View.OnClickListener {
 
     ChatActivity current;
-    private ProgressDialog pd;
+    private static ProgressDialog pd;
 
     public NameDialog(ChatActivity current) {
         this.current = current;
@@ -63,7 +63,7 @@ public class NameDialog implements View.OnClickListener {
 
                 // Create a progress dialog to show while we're generating the cert
                 pd = ProgressDialog.show(current, "Generating Key Pair", "Sit tight, this only has to happen once", true, false);
-                Thread thread = new Thread(new GenerateKeyPair(handler, current));
+                Thread thread = new Thread(new GenerateKeyPair(new CertProcessingHandler(), current));
                 thread.start();
             }
         });
@@ -71,8 +71,7 @@ public class NameDialog implements View.OnClickListener {
         nameDialogBuilder.show();
     }
 
-    private Handler handler = new Handler() {
-
+    static class CertProcessingHandler extends Handler {
         @Override
         public void handleMessage(Message msg) {
             switch(msg.what) {
@@ -84,5 +83,5 @@ public class NameDialog implements View.OnClickListener {
                     pd.dismiss();
             }
         }
-    };
+    }
 }

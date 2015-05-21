@@ -216,9 +216,8 @@ public class ChatActivity extends ActionBarActivity
         public void onActivityCreated(Bundle savedInstanceState) {
             super.onActivityCreated(savedInstanceState);
 
-            EditText editText = (EditText) getActivity().findViewById(R.id.entryBox);
             final EditText editTextChatLog = (EditText) getActivity().findViewById(R.id.entryBox);
-            editText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            editTextChatLog.setOnEditorActionListener(new TextView.OnEditorActionListener() {
                 @Override
                 public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                     ListView chatLog = (ListView) getActivity().findViewById(R.id.chatLog);

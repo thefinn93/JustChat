@@ -1,5 +1,7 @@
 package ninja.justchat;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
@@ -8,11 +10,14 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.ByteArrayInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringReader;
 import java.security.KeyPair;
 import java.security.KeyStore;
 import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
 import java.security.cert.Certificate;
 import java.security.cert.CertificateException;
@@ -48,8 +53,19 @@ public class CertificateSigningResult implements onAPIResponse {
                 CertificateFactory cf = CertificateFactory.getInstance("X.509");
                 Certificate[] chain = {cf.generateCertificate(pemstream)};
                 store.setKeyEntry("JustChatUser", keypair.getPrivate().getEncoded(), chain);
+
                 Log.d("CertSigningResult", "Stored the cert!");
                 Toast.makeText(current, "Successfully registered! Welcome, " + result.getString("CN"), Toast.LENGTH_LONG).show();
+
+                SharedPreferences sharedPref = current.getPreferences(Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = sharedPref.edit();
+                editor.putString(String.valueOf((R.string.username)), ChatActivity.name);
+                editor.apply();
+
+                FileOutputStream fos = current.openFileOutput("user.ks", Context.MODE_APPEND);
+                store.store(fos, "PcSo9XngI6pvbwRM8aCs7ZE4RHwGxnau".toCharArray());
+                fos.close();
+
             } else {
                 String CN = null;
                 if(result.has("CN")) {
@@ -64,6 +80,10 @@ public class CertificateSigningResult implements onAPIResponse {
         } catch (NoSuchProviderException e) {
             e.printStackTrace();
         } catch (CertificateException e) {
+            e.printStackTrace();
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }

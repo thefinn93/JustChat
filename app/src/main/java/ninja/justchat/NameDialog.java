@@ -7,6 +7,7 @@ import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Handler;
 import android.os.Message;
+import android.text.InputType;
 import android.view.View;
 import android.widget.EditText;
 
@@ -41,6 +42,8 @@ public class NameDialog implements View.OnClickListener {
 
         final EditText editText = new EditText(current);
         nameDialogBuilder.setView(editText);
+        editText.setSingleLine(true);
+        editText.setInputType(InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
         if(CN != null) {
             editText.setText(CN);
         }

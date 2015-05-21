@@ -48,7 +48,7 @@ public class CertificateSigningResult implements onAPIResponse {
                 Certificate[] chain = {cf.generateCertificate(pemstream)};
                 store.setKeyEntry("JustChatUser", keypair.getPrivate().getEncoded(), chain);
                 Log.d("CertSigningResult", "Stored the cert!");
-                Toast.makeText(current, "Successfully registered! Welcome, " + result.getString("CN"), Toast.LENGTH_SHORT).show();
+                Toast.makeText(current, "Successfully registered! Welcome, " + result.getString("CN"), Toast.LENGTH_LONG).show();
             } else {
                 String CN = null;
                 if(result.has("CN")) {

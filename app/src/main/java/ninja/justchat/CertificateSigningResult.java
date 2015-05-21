@@ -22,6 +22,7 @@ import java.security.cert.X509Certificate;
 /**
  * Created by finn on 5/19/15.
  * Receives the result of a signing request and stores the certificate (or prompts the user to select a new name if it fails)
+ * Heavily derived from code at http://stackoverflow.com/a/24408462/403940
  */
 public class CertificateSigningResult implements onAPIResponse {
 

@@ -71,10 +71,12 @@ public class ChatActivity extends ActionBarActivity
         // Setup the key store and try to load the saved
         boolean certloaded = false;
         try {
+            Log.d("LoadKey", "Preparing to load old key");
             KeyStore keystore = KeyStore.getInstance("BKS", "SC");
             FileInputStream fis = ChatActivity.this.openFileInput("user.ks");
             keystore.load(fis, "PcSo9XngI6pvbwRM8aCs7ZE4RHwGxnau".toCharArray());
             if(keystore.containsAlias("JustChatUser")) {
+                Log.v("LoadKey", "Keystore open, contains JustChatUser key");
 
                 KeyManagerFactory kmf = KeyManagerFactory.getInstance("X509");
                 kmf.init(keystore, "PcSo9XngI6pvbwRM8aCs7ZE4RHwGxnau".toCharArray());
@@ -84,31 +86,39 @@ public class ChatActivity extends ActionBarActivity
                 String defaultValue = this.getResources().getString(R.string.default_user_name);
                 name = sharedPref.getString(String.valueOf(R.string.username),defaultValue);
                 certloaded = true;
+            } else {
+                Log.d("LoadKey", "keystore loaded, but does not have an key named JustChatUser");
             }
         } catch (KeyStoreException e) {
+            Log.d("LoadKey", "Failed to load key: " + e.toString());
             e.printStackTrace();
         } catch (NoSuchProviderException e) {
+            Log.d("LoadKey", "Failed to load key: " + e.toString());
             e.printStackTrace();
         } catch (FileNotFoundException e) {
-            Log.d("CertLoader", "user.ks not found! Entering welcome dialog");
+            Log.d("LoadKey", "Failed to load key: " + e.toString());
         } catch (CertificateException e) {
+            Log.d("LoadKey", "Failed to load key: " + e.toString());
             e.printStackTrace();
         } catch (NoSuchAlgorithmException e) {
+            Log.d("LoadKey", "Failed to load key: " + e.toString());
             e.printStackTrace();
         } catch (IOException e) {
+            Log.d("LoadKey", "Failed to load key: " + e.toString());
             e.printStackTrace();
         } catch (UnrecoverableKeyException e) {
+            Log.d("LoadKey", "Failed to load key: " + e.toString());
             e.printStackTrace();
         }
         if(!certloaded) {
+            Log.d("LoadKey", "Key not loaded, launching NameDialog activity...");
             new NameDialog(ChatActivity.this).onClick(new View(this));
         }
-
-
     }
-    public ChatActivity()
-    {
+
+    public ChatActivity() {
     }
+
     @Override
     public void onNavigationDrawerItemSelected(int position) {
         // update the main content by replacing fragments

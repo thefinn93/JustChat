@@ -225,6 +225,7 @@ public class ChatActivity extends ActionBarActivity
                     ListView chatLog = (ListView) getActivity().findViewById(R.id.chatLog);
                     chatLogAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, chatLogList);
                     chatLog.setAdapter(chatLogAdapter);
+                    chatLog.setSelection(chatLogAdapter.getCount() - 1);
                     // Send message to server
                     JSONObject dataToSend = new JSONObject();
                     try {

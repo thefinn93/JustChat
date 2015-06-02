@@ -24,7 +24,6 @@ import android.widget.TextView;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.spongycastle.jce.provider.BouncyCastleProvider;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -32,7 +31,6 @@ import java.io.IOException;
 import java.security.KeyStore;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
-import java.security.NoSuchProviderException;
 import java.security.Security;
 import java.security.UnrecoverableKeyException;
 import java.security.cert.CertificateException;

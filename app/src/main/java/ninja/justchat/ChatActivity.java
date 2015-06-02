@@ -24,6 +24,7 @@ import android.widget.TextView;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.spongycastle.jce.provider.BouncyCastleProvider;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -80,13 +81,14 @@ public class ChatActivity extends ActionBarActivity
         boolean certloaded = false;
         try {
             Log.d("LoadKey", "Preparing to load old key");
-            KeyManagerFactory kmf = KeyManagerFactory.getInstance("X509");
-            KeyStore keystore = KeyStore.getInstance("BKS", "SC");
+            KeyStore keystore = KeyStore.getInstance("BKS");
             FileInputStream fis = ChatActivity.this.openFileInput("user.ks");
             keystore.load(fis, "PcSo9XngI6pvbwRM8aCs7ZE4RHwGxnau".toCharArray());
-
+            char[] keyStorePassword = "PcSo9XngI6pvbwRM8aCs7ZE4RHwGxnau".toCharArray();
             if (keystore.containsAlias("JustChatUser")) {
-                kmf.init(keystore, "PcSo9XngI6pvbwRM8aCs7ZE4RHwGxnau".toCharArray());
+                KeyManagerFactory kmf = KeyManagerFactory.getInstance("X509");
+
+                kmf.init(keystore, keyStorePassword);
 
                 Log.v("LoadKey", "Keystore open, contains JustChatUser key");
                 keymanagers = kmf.getKeyManagers();
@@ -97,10 +99,7 @@ public class ChatActivity extends ActionBarActivity
         } catch (KeyStoreException e) {
             Log.d("LoadKey", "Failed to load key: " + e.toString());
             e.printStackTrace();
-        } catch (NoSuchProviderException e) {
-            Log.d("LoadKey", "Failed to load key: " + e.toString());
-            e.printStackTrace();
-        } catch (FileNotFoundException e) {
+        }  catch (FileNotFoundException e) {
             Log.d("LoadKey", "Failed to load key: " + e.toString());
         } catch (CertificateException e) {
             Log.d("LoadKey", "Failed to load key: " + e.toString());

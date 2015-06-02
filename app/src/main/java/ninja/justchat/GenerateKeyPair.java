@@ -59,7 +59,7 @@ public class GenerateKeyPair implements Runnable {
             dataToSend.put("action", "register");
             dataToSend.put("CN", ChatActivity.name);
             dataToSend.put("csr", csr.toString());
-            new SecureConnection(new CertificateSigningResult(current, keypair, handler)).execute(dataToSend);
+            new SecureConnection(new CertificateSigningResult(current, keypair, handler), "/keysign").execute(dataToSend);
             this.handler.sendEmptyMessage(0);
         } catch (OperatorCreationException e) {
             e.printStackTrace();

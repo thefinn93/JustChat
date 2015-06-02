@@ -27,15 +27,23 @@ public class SecureConnection extends AsyncTask<JSONObject, Object, Object> {
 
     private onAPIResponse listener;
     private KeyManager[] keymanagers;
+    private String path;
 
     public SecureConnection(onAPIResponse listener) {
         this.listener = listener;
         this.keymanagers = null;
+        this.path = "/api";
     }
 
     public SecureConnection(onAPIResponse listener, KeyManager[] keystore) {
         this.listener = listener;
         this.keymanagers = keymanagers;
+        this.path = "/api";
+    }
+
+    public SecureConnection(onAPIResponse listener, String path) {
+        this.listener = listener;
+        this.path = path;
     }
 
     @Override
@@ -58,7 +66,7 @@ public class SecureConnection extends AsyncTask<JSONObject, Object, Object> {
             SSLContext context = SSLContext.getInstance("TLSv1.2");
             context.init(keymanagers, tm, null);
 
-            URL url = new URL( "https://justchat.finn.ninja/api" );
+            URL url = new URL( "https://justchat.finn.ninja" + this.path );
 
             HttpsURLConnection connection = (HttpsURLConnection) url.openConnection();
             connection.setRequestProperty("Content-Type", "application/json");

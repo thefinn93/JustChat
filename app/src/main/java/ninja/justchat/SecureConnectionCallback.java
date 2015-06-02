@@ -2,6 +2,7 @@ package ninja.justchat;
 
 import android.util.Log;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -16,7 +17,35 @@ public class SecureConnectionCallback implements onAPIResponse {
     @Override
     public void onAPIResponse(JSONObject result) {
         try {
-            Log.d("ConnectionCB", result.get("wat").toString());
+            JSONArray actions = result.getJSONArray("actions");
+            for (int a = 0; a < actions.length(); a++) {
+                JSONObject action = actions.getJSONObject(a);
+                switch (action.getString("action")) {
+                    case "join":
+                        ChatActivity.channels.add(new Channel(action.getString("channel")));
+                        ChatActivity.currentChannel = ChatActivity.channels.get(ChatActivity.channels.size() - 1);
+                        break;
+                    case "leave":
+                        ChatActivity.channels.remove(new Channel(action.getString("channel")));
+                        if (!ChatActivity.channels.isEmpty()) {
+                            ChatActivity.currentChannel = ChatActivity.channels.get(ChatActivity.channels.size() - 1);
+                        }
+                        else {
+                            ChatActivity.currentChannel = null;
+                        }
+                        break;
+                    case "receiveMessage":
+                        for (Channel targetChannel : ChatActivity.channels) {
+                            if (targetChannel.name == action.getString("channel")) {
+                                targetChannel.chatLog.add(action.getString("message"));
+                            }
+                        }
+                        break;
+                    default:
+                        Log.e("API_Response", "Received invalid action: " + action.getString("action"));
+                        break;
+                }
+            }
         } catch (JSONException e) {
             e.printStackTrace();
         }

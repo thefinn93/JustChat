@@ -51,9 +51,11 @@ public class ChatActivity extends ActionBarActivity
      * Used to store the last screen title. For use in {@link #restoreActionBar()}.
      */
     private CharSequence mTitle;
-    static private KeyManager[] keymanagers;
+    static public KeyManager[] keymanagers;
 
     static public String name = "";
+    static public ArrayList<Channel> channels = new ArrayList<>();
+    static public Channel currentChannel = null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

@@ -11,12 +11,15 @@ import android.text.InputType;
 import android.view.View;
 import android.widget.EditText;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 
 /**
- * Created by Brad Minogue on 4/28/2015.
- * Updated to include certificate generation request stuff by Finn Herzfeld on 5/18/2015
- * Links for certificate stuff:
- *  http://stackoverflow.com/a/24408462/403940
+ * Created by Chad Dugie on 5/24/2015.
+ *
+ *
+ *
  *
  */
 public class ChannelSelect implements View.OnClickListener {
@@ -37,8 +40,8 @@ public class ChannelSelect implements View.OnClickListener {
 
     public void onClick(View v, String CN, String error) {
         AlertDialog.Builder channelSelectBuilder = new AlertDialog.Builder(current);
-        channelSelectBuilder.setTitle("Select name");
-        channelSelectBuilder.setMessage("Select a name to identify yourself");
+        channelSelectBuilder.setTitle("Select channel");
+        channelSelectBuilder.setMessage("Select a channel to join");
 
         final EditText editText = new EditText(current);
         channelSelectBuilder.setView(editText);
@@ -55,23 +58,35 @@ public class ChannelSelect implements View.OnClickListener {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 // Store the name somewhere
-                ChatActivity.name = editText.getText().toString();
+                try {
+                    JSONObject channelSelection = new JSONObject();
+                    channelSelection.put("action", "join");
+                    channelSelection.put("channel", editText.getText().toString());
+                    SecureConnectionCallback callback = new SecureConnectionCallback();
+                    new SecureConnection(callback, ChatActivity.keymanagers).execute(channelSelection);
+                    //Thread thread = new Thread(new SecureConnection(new SecureConnectionCallback()));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
 
-                // Create a progress dialog to show while we're generating the cert
-                pd = ProgressDialog.show(current, "Generating Key Pair", "Sit tight, this only has to happen once", true, false);
-                
-                // Save the username to our preferences file under R.string.user_name
-                // Only save if we're not debugging
-                if (!BuildConfig.DEBUG) {
-                    SharedPreferences sharedPref = current.getPreferences(Context.MODE_PRIVATE);
-                    SharedPreferences.Editor editor = sharedPref.edit();
-                    editor.putString(String.valueOf((R.string.username)), ChatActivity.name);
-                    editor.apply();
+
+                    // Create a progress dialog to show while we're generating the cert
+                    pd = ProgressDialog.show(current, "Generating Key Pair", "Sit tight, this only has to happen once", true, false);
+
+                    // Save the username to our preferences file under R.string.user_name
+                    // Only save if we're not debugging
+                    if (!BuildConfig.DEBUG) {
+                        SharedPreferences sharedPref = current.getPreferences(Context.MODE_PRIVATE);
+                        SharedPreferences.Editor editor = sharedPref.edit();
+                        editor.putString(String.valueOf((R.string.username)), ChatActivity.name);
+                        editor.apply();
+                    }
                 }
             }
-        });
 
-        channelSelectBuilder.show();
+            );
+
+            channelSelectBuilder.show();
+        }
+
     }
-
-}

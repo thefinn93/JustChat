@@ -17,6 +17,7 @@ public class SecureConnectionCallback implements onAPIResponse {
     @Override
     public void onAPIResponse(JSONObject result) {
         try {
+            // TODO: Check the value of success (in result). if success = false, display reason
             JSONArray actions = result.getJSONArray("actions");
             for (int a = 0; a < actions.length(); a++) {
                 JSONObject action = actions.getJSONObject(a);
@@ -47,6 +48,7 @@ public class SecureConnectionCallback implements onAPIResponse {
                 }
             }
         } catch (JSONException e) {
+            Log.d("SecureConnectionCB", result.toString());
             e.printStackTrace();
         }
     }

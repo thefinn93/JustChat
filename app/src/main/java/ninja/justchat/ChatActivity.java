@@ -56,7 +56,7 @@ public class ChatActivity extends ActionBarActivity
      * Used to store the last screen title. For use in {@link #restoreActionBar()}.
      */
     private CharSequence mTitle;
-    static public KeyManagerFactory keymanagers;
+    static public KeyManager[] keymanagers;
 
     static public String name = "";
     static public ArrayList<Channel> channels = new ArrayList<>();
@@ -89,7 +89,7 @@ public class ChatActivity extends ActionBarActivity
                 kmf.init(keystore, "PcSo9XngI6pvbwRM8aCs7ZE4RHwGxnau".toCharArray());
 
                 Log.v("LoadKey", "Keystore open, contains JustChatUser key");
-                keymanagers = kmf;
+                keymanagers = kmf.getKeyManagers();
                 certloaded = true;
             } else {
                 Log.d("LoadKey", "keystore loaded, but does not have an key named JustChatUser");

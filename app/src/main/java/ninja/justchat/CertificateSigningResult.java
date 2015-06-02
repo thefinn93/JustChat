@@ -61,15 +61,9 @@ public class CertificateSigningResult implements onAPIResponse {
                 Log.d("CertSigningResult", "Stored the cert!");
                 Toast.makeText(current, "Successfully registered! Welcome, " + result.getString("CN"), Toast.LENGTH_LONG).show();
 
-                SharedPreferences sharedPref = current.getPreferences(Context.MODE_PRIVATE);
-                SharedPreferences.Editor editor = sharedPref.edit();
-                editor.putString(String.valueOf((R.string.username)), ChatActivity.name);
-                editor.apply();
-
                 FileOutputStream fos = current.openFileOutput("user.ks", Context.MODE_APPEND);
                 store.store(fos, "PcSo9XngI6pvbwRM8aCs7ZE4RHwGxnau".toCharArray());
                 fos.close();
-
             } else {
                 String CN = null;
                 if(result.has("CN")) {

@@ -84,9 +84,6 @@ public class ChatActivity extends ActionBarActivity
                 kmf.init(keystore, "PcSo9XngI6pvbwRM8aCs7ZE4RHwGxnau".toCharArray());
                 keymanagers = kmf.getKeyManagers();
 
-                SharedPreferences sharedPref = ChatActivity.this.getPreferences(Context.MODE_PRIVATE);
-                String defaultValue = this.getResources().getString(R.string.default_user_name);
-                name = sharedPref.getString(String.valueOf(R.string.username),defaultValue);
                 certloaded = true;
             } else {
                 Log.d("LoadKey", "keystore loaded, but does not have an key named JustChatUser");

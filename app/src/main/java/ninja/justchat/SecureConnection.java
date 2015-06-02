@@ -35,7 +35,7 @@ public class SecureConnection extends AsyncTask<JSONObject, Object, Object> {
         this.path = "/api";
     }
 
-    public SecureConnection(onAPIResponse listener, KeyManager[] keystore) {
+    public SecureConnection(onAPIResponse listener, KeyManager[] keymanagers) {
         this.listener = listener;
         this.keymanagers = keymanagers;
         this.path = "/api";
@@ -64,21 +64,20 @@ public class SecureConnection extends AsyncTask<JSONObject, Object, Object> {
             assert (null != tm);
 
             SSLContext context = SSLContext.getInstance("TLSv1.2");
+
             context.init(keymanagers, tm, null);
 
             URL url = new URL( "https://justchat.finn.ninja" + this.path );
 
             HttpsURLConnection connection = (HttpsURLConnection) url.openConnection();
+            connection.setSSLSocketFactory(context.getSocketFactory());
             connection.setRequestProperty("Content-Type", "application/json");
-
             connection.setDoOutput(true);
 
             PrintWriter postdata = new PrintWriter(connection.getOutputStream());
             postdata.println(params[0].toString());
             Log.d("SecureConnectionJSON", params[0].toString());
             postdata.close();
-
-            connection.setSSLSocketFactory(context.getSocketFactory());
 
             BufferedReader br = new BufferedReader(new InputStreamReader(connection.getInputStream()));
 

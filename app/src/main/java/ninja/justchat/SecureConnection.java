@@ -65,7 +65,11 @@ public class SecureConnection extends AsyncTask<JSONObject, Object, Object> {
             assert (null != tm);
 
             SSLContext context = SSLContext.getInstance("TLSv1.2");
-            context.init(kmf.getKeyManagers(), tm, null);
+            if(kmf == null) {
+                context.init(null, tm, null);
+            } else {
+                context.init(kmf.getKeyManagers(), tm, null);
+            }
 
             URL url = new URL( "https://justchat.finn.ninja" + this.path );
 

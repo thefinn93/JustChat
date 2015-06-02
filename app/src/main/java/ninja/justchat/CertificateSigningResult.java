@@ -20,6 +20,7 @@ import java.security.KeyStore;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
+import java.security.Security;
 import java.security.cert.Certificate;
 import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
@@ -31,6 +32,10 @@ import java.security.cert.X509Certificate;
  * Heavily derived from code at http://stackoverflow.com/a/24408462/403940
  */
 public class CertificateSigningResult implements onAPIResponse {
+
+    static {
+        Security.insertProviderAt(new org.spongycastle.jce.provider.BouncyCastleProvider(), 1);
+    }
 
     private ChatActivity current;
     private KeyPair keypair;
@@ -51,6 +56,7 @@ public class CertificateSigningResult implements onAPIResponse {
                 Log.d("CertSigningResult", "Got a cert successfully, your CN is " + result.getString("CN"));
                 Log.d("CertSigningResult", "Got the following cert: " + result.getString("cert"));
                 KeyStore store = KeyStore.getInstance("BKS", "SC");
+                store.load(null, null);
 
                 InputStream pemstream = new ByteArrayInputStream(result.getString("cert").getBytes());
 
@@ -61,7 +67,7 @@ public class CertificateSigningResult implements onAPIResponse {
                 Log.d("CertSigningResult", "Stored the cert!");
                 Toast.makeText(current, "Successfully registered! Welcome, " + result.getString("CN"), Toast.LENGTH_LONG).show();
 
-                FileOutputStream fos = current.openFileOutput("user.ks", Context.MODE_APPEND);
+                FileOutputStream fos = current.openFileOutput("user.ks", Context.MODE_PRIVATE);
                 store.store(fos, "PcSo9XngI6pvbwRM8aCs7ZE4RHwGxnau".toCharArray());
                 fos.close();
             } else {

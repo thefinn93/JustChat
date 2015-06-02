@@ -26,24 +26,25 @@ import org.json.JSONObject;
 public class SecureConnection extends AsyncTask<JSONObject, Object, Object> {
 
     private onAPIResponse listener;
-    private KeyManager[] keymanagers;
+    private KeyManagerFactory kmf;
     private String path;
 
     public SecureConnection(onAPIResponse listener) {
         this.listener = listener;
-        this.keymanagers = null;
+        this.kmf = null;
         this.path = "/api";
     }
 
-    public SecureConnection(onAPIResponse listener, KeyManager[] keystore) {
+    public SecureConnection(onAPIResponse listener, KeyManagerFactory kmf) {
         this.listener = listener;
-        this.keymanagers = keymanagers;
+        this.kmf = kmf;
         this.path = "/api";
     }
 
     public SecureConnection(onAPIResponse listener, String path) {
         this.listener = listener;
         this.path = path;
+        this.kmf = null;
     }
 
     @Override
@@ -64,7 +65,7 @@ public class SecureConnection extends AsyncTask<JSONObject, Object, Object> {
             assert (null != tm);
 
             SSLContext context = SSLContext.getInstance("TLSv1.2");
-            context.init(keymanagers, tm, null);
+            context.init(kmf.getKeyManagers(), tm, null);
 
             URL url = new URL( "https://justchat.finn.ninja" + this.path );
 

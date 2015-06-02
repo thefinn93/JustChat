@@ -32,6 +32,7 @@ import java.security.KeyStore;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
+import java.security.Security;
 import java.security.UnrecoverableKeyException;
 import java.security.cert.CertificateException;
 import java.util.ArrayList;
@@ -42,6 +43,10 @@ import javax.net.ssl.KeyManagerFactory;
 public class ChatActivity extends ActionBarActivity
         implements NavigationDrawerFragment.NavigationDrawerCallbacks {
 
+    static {
+        Security.insertProviderAt(new org.spongycastle.jce.provider.BouncyCastleProvider(), 1);
+    }
+
     /**
      * Fragment managing the behaviors, interactions and presentation of the navigation drawer.
      */
@@ -51,11 +56,12 @@ public class ChatActivity extends ActionBarActivity
      * Used to store the last screen title. For use in {@link #restoreActionBar()}.
      */
     private CharSequence mTitle;
-    static public KeyManager[] keymanagers;
+    static public KeyManagerFactory keymanagers;
 
     static public String name = "";
     static public ArrayList<Channel> channels = new ArrayList<>();
     static public Channel currentChannel = null;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -74,16 +80,16 @@ public class ChatActivity extends ActionBarActivity
         boolean certloaded = false;
         try {
             Log.d("LoadKey", "Preparing to load old key");
+            KeyManagerFactory kmf = KeyManagerFactory.getInstance("X509");
             KeyStore keystore = KeyStore.getInstance("BKS", "SC");
             FileInputStream fis = ChatActivity.this.openFileInput("user.ks");
             keystore.load(fis, "PcSo9XngI6pvbwRM8aCs7ZE4RHwGxnau".toCharArray());
-            if(keystore.containsAlias("JustChatUser")) {
-                Log.v("LoadKey", "Keystore open, contains JustChatUser key");
 
-                KeyManagerFactory kmf = KeyManagerFactory.getInstance("X509");
+            if (keystore.containsAlias("JustChatUser")) {
                 kmf.init(keystore, "PcSo9XngI6pvbwRM8aCs7ZE4RHwGxnau".toCharArray());
-                keymanagers = kmf.getKeyManagers();
 
+                Log.v("LoadKey", "Keystore open, contains JustChatUser key");
+                keymanagers = kmf;
                 certloaded = true;
             } else {
                 Log.d("LoadKey", "keystore loaded, but does not have an key named JustChatUser");

@@ -21,6 +21,7 @@ public class SecureConnectionCallback implements onAPIResponse {
     private FragmentActivity frag;
 
     SecureConnectionCallback(FragmentActivity frag) {
+        // Not sure what exactly we should be passing. Ideally we would get a callback function to handle errors, but we dont have time for that
         this.frag = frag;
     }
 

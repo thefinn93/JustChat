@@ -237,7 +237,7 @@ public class ChatActivity extends ActionBarActivity
                     }
 
                     // Network code
-                    SecureConnectionCallback callback = new SecureConnectionCallback();
+                    SecureConnectionCallback callback = new SecureConnectionCallback(getActivity());
                     new SecureConnection(callback, keymanagers).execute(dataToSend);
 
 

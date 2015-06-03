@@ -29,15 +29,16 @@ public class SecureConnectionCallback implements onAPIResponse {
     }
 
     private void displayError(String error) {
-        EditText inputbox = (EditText) this.frag.findViewById(R.id.entryBox);
-        inputbox.setError(error);
+        if(this.frag != null) {
+            EditText inputbox = (EditText) this.frag.findViewById(R.id.entryBox);
+            inputbox.setError(error);
+        }
     }
 
     @Override
     public void onAPIResponse(JSONObject result) {
         try {
             if(result.getBoolean("success")) {
-                // TODO: Check the value of success (in result). if success = false, display reason
                 JSONArray actions = result.getJSONArray("actions");
                 for (int a = 0; a < actions.length(); a++) {
                     JSONObject action = actions.getJSONObject(a);

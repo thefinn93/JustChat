@@ -43,6 +43,7 @@ public class SecureConnectionCallback implements onAPIResponse {
                 JSONArray actions = result.getJSONArray("actions");
                 for (int a = 0; a < actions.length(); a++) {
                     JSONObject action = actions.getJSONObject(a);
+                    displayError(result.toString());
                     switch (action.getString("action")) {
                         case "join":
                             ChatActivity.channels.add(new Channel(action.getString("channel")));
@@ -56,7 +57,7 @@ public class SecureConnectionCallback implements onAPIResponse {
                                 ChatActivity.currentChannel = null;
                             }
                             break;
-                        case "receiveMessage":
+                        case "sendmsg":
                             for (Channel targetChannel : ChatActivity.channels) {
                                 if (targetChannel.name == action.getString("channel")) {
                                     targetChannel.chatLog.add(action.getString("message"));

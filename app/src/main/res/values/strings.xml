@@ -12,7 +12,7 @@
     <string name="action_join">Join a channel</string>
     <string name="action_leave">Leave this channel</string>
     <string name="action_refresh">Refresh chat log</string>
-    <string name="username"></string>
+    <string name="refresh">F5</string>
     <string name="channel_select_title">Select channel</string>
     <string name="channel_select_message">Select a channel to join</string>
     <string-array name="channel_select_context"><item>Leave</item></string-array>

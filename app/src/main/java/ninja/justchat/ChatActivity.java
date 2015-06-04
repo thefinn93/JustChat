@@ -233,6 +233,7 @@ public class ChatActivity extends ActionBarActivity
                     JSONObject dataToSend = new JSONObject();
                     try {
                         dataToSend.put("action", "sendmsg");
+                        dataToSend.put("channel", "Chennel");
                         dataToSend.put("message", editTextEntryBox.getText().toString());
                     } catch(JSONException e) {
                         Log.e("JSONEncoding", e.toString());
@@ -245,7 +246,7 @@ public class ChatActivity extends ActionBarActivity
 
 
                     // Add it to the list
-                    currentChannel.chatLog.add(name + ">" + editTextEntryBox.getText().toString());
+                    //currentChannel.chatLog.add(name + ">" + editTextEntryBox.getText().toString());
                     //chatLog.scrollTo(0, chatLog.getLayout().getLineTop(chatLog.getLineCount()) - chatLog.getHeight());
                     v.setText("");
                     return true;

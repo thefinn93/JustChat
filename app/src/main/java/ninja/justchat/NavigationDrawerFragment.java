@@ -80,7 +80,7 @@ public class NavigationDrawerFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        channels.add("Chennel");
+        //channels.add("Chennel");
         //channels = getArguments().getStringArrayList("channels");
         //channels.add("Chennel");
 
@@ -120,6 +120,9 @@ public class NavigationDrawerFragment extends Fragment {
                 selectItem(position);
             }
         });
+        for (Channel channel : ChatActivity.channels) {
+            channels.add(channel.name);
+        }
         channelAdapter = new ArrayAdapter<String>(getActionBar().getThemedContext(), android.R.layout.simple_list_item_1, channels);
         mDrawerListView.setAdapter(channelAdapter);
         registerForContextMenu(mDrawerListView);
@@ -157,9 +160,6 @@ public class NavigationDrawerFragment extends Fragment {
         String menutItemName = menuItems[menuItemIndex];
         String listItemName = channels.get(info.position);
         switch (menutItemName) {
-            case "Join":
-
-                break;
             case "Leave":
 
                 break;

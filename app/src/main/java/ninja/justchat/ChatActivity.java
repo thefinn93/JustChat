@@ -119,6 +119,8 @@ public class ChatActivity extends ActionBarActivity
     }
 
     public ChatActivity() {
+        channels.add(new Channel("Chennel"));
+        currentChannel=channels.get(0);
     }
 
     @Override
@@ -173,7 +175,8 @@ public class ChatActivity extends ActionBarActivity
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_join) {
+            new ChannelSelect(ChatActivity.this).onClick(new View(this));
             return true;
         }
 
@@ -190,7 +193,7 @@ public class ChatActivity extends ActionBarActivity
          */
         private static final String ARG_SECTION_NUMBER = "section_number";
 
-        private ArrayList<String> chatLogList = new ArrayList<>();
+        //private ArrayList<String> chatLogList = new ArrayList<>();
         private ArrayAdapter<String> chatLogAdapter;
 
         /**
@@ -218,19 +221,19 @@ public class ChatActivity extends ActionBarActivity
         public void onActivityCreated(Bundle savedInstanceState) {
             super.onActivityCreated(savedInstanceState);
 
-            final EditText editTextChatLog = (EditText) getActivity().findViewById(R.id.entryBox);
-            editTextChatLog.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            final EditText editTextEntryBox = (EditText) getActivity().findViewById(R.id.entryBox);
+            editTextEntryBox.setOnEditorActionListener(new TextView.OnEditorActionListener() {
                 @Override
                 public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                    ListView chatLog = (ListView) getActivity().findViewById(R.id.chatLog);
-                    chatLogAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, chatLogList);
-                    chatLog.setAdapter(chatLogAdapter);
-                    chatLog.setSelection(chatLogAdapter.getCount() - 1);
+                    ListView chatLogList = (ListView) getActivity().findViewById(R.id.chatLogList);
+                    chatLogAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, currentChannel.chatLog);
+                    chatLogList.setAdapter(chatLogAdapter);
+                    chatLogList.setSelection(chatLogAdapter.getCount() - 1);
                     // Send message to server
                     JSONObject dataToSend = new JSONObject();
                     try {
                         dataToSend.put("action", "sendmsg");
-                        dataToSend.put("message", editTextChatLog.getText().toString());
+                        dataToSend.put("message", editTextEntryBox.getText().toString());
                     } catch(JSONException e) {
                         Log.e("JSONEncoding", e.toString());
                         e.printStackTrace();
@@ -242,7 +245,7 @@ public class ChatActivity extends ActionBarActivity
 
 
                     // Add it to the list
-                    chatLogList.add(name + ">" + editTextChatLog.getText().toString());
+                    currentChannel.chatLog.add(name + ">" + editTextEntryBox.getText().toString());
                     //chatLog.scrollTo(0, chatLog.getLayout().getLineTop(chatLog.getLineCount()) - chatLog.getHeight());
                     v.setText("");
                     return true;

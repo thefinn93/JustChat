@@ -10,7 +10,9 @@
 
     <string name="action_settings">Settings</string>
     <string name="action_join">Join a channel</string>
-    <string name="action_part">Leave this channel</string>
+    <string name="action_leave">Leave this channel</string>
     <string name="username"></string>
-    <string-array name="channel_select_context"><item>Join</item><item>Leave</item></string-array>
+    <string name="channel_select_title">Select channel</string>
+    <string name="channel_select_message">Select a channel to join</string>
+    <string-array name="channel_select_context"><item>Leave</item></string-array>
 </resources>

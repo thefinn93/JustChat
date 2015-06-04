@@ -8,11 +8,14 @@ import android.content.SharedPreferences;
 import android.os.Handler;
 import android.os.Message;
 import android.text.InputType;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.io.Console;
 
 
 /**
@@ -40,8 +43,8 @@ public class ChannelSelect implements View.OnClickListener {
 
     public void onClick(View v, String CN, String error) {
         AlertDialog.Builder channelSelectBuilder = new AlertDialog.Builder(current);
-        channelSelectBuilder.setTitle("Select channel");
-        channelSelectBuilder.setMessage("Select a channel to join");
+        channelSelectBuilder.setTitle(R.string.channel_select_title);
+        channelSelectBuilder.setMessage(R.string.channel_select_message);
 
         final EditText editText = new EditText(current);
         channelSelectBuilder.setView(editText);
@@ -66,21 +69,14 @@ public class ChannelSelect implements View.OnClickListener {
                     new SecureConnection(callback, ChatActivity.keymanagers).execute(channelSelection);
                     //Thread thread = new Thread(new SecureConnection(new SecureConnectionCallback()));
                 } catch (JSONException e) {
+                    Log.d("ChannelSelectFailure", "Got to printStackTrace");
                     e.printStackTrace();
                 }
 
 
                     // Create a progress dialog to show while we're generating the cert
-                    pd = ProgressDialog.show(current, "Generating Key Pair", "Sit tight, this only has to happen once", true, false);
+//                    pd = ProgressDialog.show(current, "Generating Key Pair", "Sit tight, this only has to happen once", true, false);
 
-                    // Save the username to our preferences file under R.string.user_name
-                    // Only save if we're not debugging
-                    if (!BuildConfig.DEBUG) {
-                        SharedPreferences sharedPref = current.getPreferences(Context.MODE_PRIVATE);
-                        SharedPreferences.Editor editor = sharedPref.edit();
-                        editor.putString(String.valueOf((R.string.username)), ChatActivity.name);
-                        editor.apply();
-                    }
                 }
             }
 

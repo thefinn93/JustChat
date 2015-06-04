@@ -3,6 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools" tools:context=".ChatActivity">
     <!--<item android:id="@+id/action_settings" android:title="@string/action_settings"
         android:orderInCategory="100" app:showAsAction="never" />-->
+    <item android:id="@+id/action_refresh" android:title="@string/action_refresh"
+        android:orderInCategory="100" app:showAsAction="never" />
     <item android:id="@+id/action_join" android:title="@string/action_join"
         android:orderInCategory="100" app:showAsAction="never" />
     <!--<item android:id="@+id/action_leave" android:title="@string/action_leave"

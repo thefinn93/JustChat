@@ -11,6 +11,7 @@
     <string name="action_settings">Settings</string>
     <string name="action_join">Join a channel</string>
     <string name="action_leave">Leave this channel</string>
+    <string name="action_refresh">Refresh chat log</string>
     <string name="username"></string>
     <string name="channel_select_title">Select channel</string>
     <string name="channel_select_message">Select a channel to join</string>

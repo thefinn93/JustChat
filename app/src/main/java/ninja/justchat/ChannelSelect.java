@@ -69,7 +69,7 @@ public class ChannelSelect implements View.OnClickListener {
                     new SecureConnection(callback, ChatActivity.keymanagers).execute(channelSelection);
                     //Thread thread = new Thread(new SecureConnection(new SecureConnectionCallback()));
                 } catch (JSONException e) {
-                    Log.d("ChannelSelectFailure", "Got to printStackTrace");
+                    Log.d("ChannelSelectFailure", "Failed to join channel");
                     e.printStackTrace();
                 }
 

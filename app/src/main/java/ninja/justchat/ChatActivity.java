@@ -175,12 +175,28 @@ public class ChatActivity extends ActionBarActivity
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
+        if (id == R.id.action_refresh) {
+
+            return true;
+        }
         if (id == R.id.action_join) {
             new ChannelSelect(ChatActivity.this).onClick(new View(this));
             return true;
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public void refreshChatLog() {
+        try {
+            JSONObject refreshChatLogCall = new JSONObject();
+            refreshChatLogCall.put("action", "refresh");
+            SecureConnectionCallback callback = new SecureConnectionCallback();
+            new SecureConnection(callback, ChatActivity.keymanagers).execute(refreshChatLogCall);
+        } catch (JSONException e) {
+            Log.d("RefreshFailure", "Failed to refresh chat log");
+            e.printStackTrace();
+        }
     }
 
     /**

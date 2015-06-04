@@ -176,7 +176,7 @@ public class ChatActivity extends ActionBarActivity
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_refresh) {
-
+            refreshChatLog();
             return true;
         }
         if (id == R.id.action_join) {
